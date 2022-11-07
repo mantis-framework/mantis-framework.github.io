@@ -1,5 +1,5 @@
 :root {
-	--bg-code: #1a1717; /*hsl(0deg, 0%, 12%, 0.25);*/
+	--bg-code: #121212; /*hsl(0deg, 0%, 12%, 0.25);*/
 	--gradient-code-bg: linear-gradient(var(--bg-code), var(--bg-code));
 	--gradient-border: linear-gradient(to bottom right, var(--rnbw-color-3), var(--rnbw-color-0));
 }
