@@ -1,0 +1,58 @@
+/*
+	mantis framework:
+	purpose: hues of the rainbow
+
+	nice hsl palettes:
+		(mantis)      (330 deg, 25%, 39%)
+		(mantis)      (330 deg, 43%, 45%)
+
+		(mantis)      (205 deg, 10%, 50%)
+
+		(nift salmon) ( 0deg,73%,68%) 
+		(earthy)      (41deg,16%,54%) (287°,30%,45%) 
+		(earthy)      (h deg,20%,50%)
+
+		()              (h deg,52%, 63%)
+		()              (h deg,27%, 63%)
+		()              (h deg,38%, 63%)
+		()              (h deg,44%, 63%)
+
+*/
+
+:root {
+	--hue-red           :   0;
+	--hue-orange-red    :  24;
+	--hue-orange        :  30;
+	--hue-orange-yellow :  39;
+	--hue-yellow        :  60;
+	--hue-lime          :  90;
+	--hue-green         : 120;
+	--hue-xxx           : 150;
+	--hue-cyan          : 180;
+	--hue-light-blue    : 210;
+	--hue-blue          : 240;
+	--hue-purple        : 270;
+	--hue-indigo        : 280;
+	--hue-magenta       : 300;
+	--hue-fuchsia       : 309;
+	--hue-violet        : 320;
+	--hue-pink          : 330;
+
+	--rnbw-grad-top   : linear-gradient(to right, red, blue);
+	--rnbw-grad-right : linear-gradient(to bottom, blue, pink);
+	--rnbw-grad-bottom: linear-gradient(to left, pink, green);
+	--rnbw-grad-left  : linear-gradient(to top, green, red);
+}
+
+/*
+	useful: 
+		- https://shark.comfsm.fm/~dleeling/cis/hsl_rainbow.html
+		- https://encycolorpedia.com/
+		- https://www.colorhexa.com/
+		- https://www.color-name.com/sherbet.color
+*/
+
+/*
+	to add:
+		- https://stackoverflow.com/questions/5162458/fade-through-more-more-natural-rainbow-spectrum-in-hsv-hsb
+*/

@@ -1,0 +1,119 @@
+@font-face 
+{
+	font-family: "oxygen";
+	src: url("@pathtofile(output/assets/fonts/OxygenMono-Regular.otf)") format("truetype");
+	font-display: fallback;
+}
+
+@font-face 
+{
+	font-family: "CyberspaceRaceway";
+	src: url("@pathtofile(output/assets/fonts/CyberspaceRacewayFront-lWGD.ttf)") format("truetype");
+	font-display: fallback;
+}
+
+:root {
+	--bg-content :   #121212;
+}
+
+html, body, div, 
+h1, h2, h3, h4, h5, h6,
+a, code, img, header,
+form, label, legend, 
+table, caption, tbody, 
+tfoot, thead, tr, th, td {
+	margin:  0 0 0 0;
+	line-height: 1.25em;
+	box-sizing: border-box;
+	max-width: 100%;
+}
+
+body
+{
+	background: var(--bg-content);
+	color: #ffffff;
+	font-family: oxygen;
+	max-width: 100%;
+	min-height: 100%;
+}
+
+::selection {
+	color: var(--bg-content);
+	background-color: var(--rnbw-color-6);
+}
+
+h1::selection {
+	background-color: transparent;
+	color: inherit;
+}
+
+h1, h2, h3, h4, h5, h6
+{
+	text-align: center;
+}
+
+h1{color: var(--rnbw-color-6)}
+h2{color: var(--rnbw-color-7)}
+h3{color: var(--rnbw-color-8)}
+h4{color: var(--rnbw-color-9)}
+h5{color: var(--rnbw-color-10)}
+h6{color: var(--rnbw-color-11)}
+
+.noselect, br, .fa
+{
+	-webkit-user-select: none; /* Chrome/Safari */
+	-moz-user-select: none; /* Firefox */
+	-ms-user-select: none; /* IE10+ */
+}
+
+ul li {
+  list-style: none;
+  list-style-position: inside !important;
+}
+
+#content ul li::before {
+  content: "\2022";  /* Add content: \2022 is the CSS Code/unicode for a bullet */
+  color: #cf7327; /* Change the color */
+  font-weight: bold; /* If you want it to be bold */
+  font-size: 12pt;
+  display: inline-block; /* Needed to add space between the bullet and the text */
+  width: 0.75em; /* Also needed for space (tweak if needed) */
+  margin-left: 0em; /* Also needed for space (tweak if needed) */
+}
+
+#content
+{
+	overflow-y: auto;
+	max-width: 85%;
+	width: 850px;
+	margin-left: 2em;
+	margin-right: 2em;
+	margin-top: 0.5em;
+	text-align: left;
+}
+
+
+/* width */
+::-webkit-scrollbar {
+	width: 10px;
+	height: 0px; /*5px;*/
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+ 	/*background: var(--bg-content); */
+ 	background: transparent;
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+	/*border-radius: 4px;*/
+ 	background: var(--rnbw-color);
+	border-left: 9px var(--bg-content) solid;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+ 	background: var(--rnbw-color-hover);
+ 	border-left: 0px;
+}

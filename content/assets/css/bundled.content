@@ -1,0 +1,11 @@
+@input("content/assets/css/palettes/hue.css")
+@input("content/assets/css/palettes/neon.css")
+@input("content/assets/css/palettes/pastel.css")
+@input("content/assets/css/palettes/powder.css")
+@input("content/assets/css/palettes/sherbet.css")
+@input("content/assets/css/palettes/sorbet.css")
+
+@input("content/assets/css/style.css")
+@input("content/assets/css/font-awesome.css")
+@input("content/assets/css/menu.css")
+@input("content/assets/css/pre.css")

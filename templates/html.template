@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		@input("templates/head.template")
+	</head>
+
+	<body>
+		<div align="center">
+			@input("templates/menu.template")
+
+			<div id="content">
+@content
+
+				@//input("templates/footer.template")
+			</div>
+		</div>
+
+		<script type="text/javascript" src="@pathto(content/assets/js/microlight.js)"></script>
+		<script type="text/javascript" src="@pathto(output/assets/js/bundled.js)"></script>
+	</body>
+</html>

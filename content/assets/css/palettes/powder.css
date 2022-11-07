@@ -1,0 +1,48 @@
+/*
+	powder color palette
+	hsl = (h, 52%, 80%)
+*/
+
+:root {
+	--powder-red        : hsl(var(--hue-red)       , 52%, 80%);
+	--powder-orange     : hsl(var(--hue-orange)    , 52%, 80%);
+	--powder-yellow     : hsl(var(--hue-yellow)    , 52%, 80%);
+	--powder-lime       : hsl(var(--hue-lime)      , 52%, 80%);
+	--powder-green      : hsl(var(--hue-green)     , 52%, 80%);
+	--powder-cyan       : hsl(var(--hue-cyan)      , 52%, 80%);
+	--powder-light-blue : hsl(var(--hue-light-blue), 52%, 80%);
+	--powder-blue       : hsl(var(--hue-blue)      , 52%, 80%);
+	--powder-purple     : hsl(var(--hue-purple)    , 52%, 80%);
+	--powder-indigo     : hsl(var(--hue-indigo)    , 52%, 80%);
+	--powder-magenta    : hsl(var(--hue-magenta)   , 52%, 80%);
+	--powder-violet     : hsl(var(--hue-violet)    , 52%, 80%);
+	--powder-pink       : hsl(var(--hue-pink)      , 52%, 80%);
+}
+
+.powder-red        {color: var(--powder-red)}
+.powder-orange     {color: var(--powder-orange)}
+.powder-yellow     {color: var(--powder-yellow)}
+.powder-lime       {color: var(--powder-yellow)}
+.powder-green      {color: var(--powder-green)}
+.powder-cyan       {color: var(--powder-blue)}
+.powder-light-blue {color: var(--powder-blue)}
+.powder-blue       {color: var(--powder-blue)}
+.powder-purple     {color: var(--powder-purple)}
+.powder-indigo     {color: var(--powder-purple)}
+.powder-magenta    {color: var(--powder-purple)}
+.powder-violet     {color: var(--powder-violet)}
+.powder-pink       {color: var(--powder-pink)}
+
+.powder-red-bg        {background-color: var(--powder-red)}
+.powder-orange-bg     {background-color: var(--powder-orange)}
+.powder-yellow-bg     {background-color: var(--powder-yellow)}
+.powder-lime-bg       {background-color: var(--powder-yellow)}
+.powder-green-bg      {background-color: var(--powder-green)}
+.powder-cyan-bg       {background-color: var(--powder-blue)}
+.powder-light-blue-bg {background-color: var(--powder-blue)}
+.powder-blue-bg       {background-color: var(--powder-blue)}
+.powder-purple-bg     {background-color: var(--powder-purple)}
+.powder-indigo-bg     {background-color: var(--powder-purple)}
+.powder-magenta-bg    {background-color: var(--powder-purple)}
+.powder-violet-bg     {background-color: var(--powder-violet)}
+.powder-pink-bg       {background-color: var(--powder-pink)}

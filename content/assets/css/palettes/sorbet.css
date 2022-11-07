@@ -1,0 +1,50 @@
+/*
+	sorbet color palette
+	hsl = (h, 89%, 83%)
+	hsl = (h, 82%, 73%)
+	hsl = (h, 63%, 52%)
+*/
+
+:root {
+	--sorbet-red        : hsl(var(--hue-red)       , 89%, 83%);
+	--sorbet-orange     : hsl(var(--hue-orange)    , 89%, 83%);
+	--sorbet-yellow     : hsl(var(--hue-yellow)    , 89%, 83%);
+	--sorbet-lime       : hsl(var(--hue-lime)      , 89%, 83%);
+	--sorbet-green      : hsl(var(--hue-green)     , 89%, 83%);
+	--sorbet-cyan       : hsl(var(--hue-cyan)      , 89%, 83%);
+	--sorbet-light-blue : hsl(var(--hue-light-blue), 89%, 83%);
+	--sorbet-blue       : hsl(var(--hue-blue)      , 89%, 83%);
+	--sorbet-purple     : hsl(var(--hue-purple)    , 89%, 83%);
+	--sorbet-indigo     : hsl(var(--hue-indigo)    , 89%, 83%);
+	--sorbet-magenta    : hsl(var(--hue-magenta)   , 89%, 83%);
+	--sorbet-violet     : hsl(var(--hue-violet)    , 89%, 83%);
+	--sorbet-pink       : hsl(var(--hue-pink)      , 89%, 83%);
+}
+
+.sorbet-red        {color: var(--sorbet-red)}
+.sorbet-orange     {color: var(--sorbet-orange)}
+.sorbet-yellow     {color: var(--sorbet-yellow)}
+.sorbet-lime       {color: var(--sorbet-yellow)}
+.sorbet-green      {color: var(--sorbet-green)}
+.sorbet-cyan       {color: var(--sorbet-blue)}
+.sorbet-light-blue {color: var(--sorbet-blue)}
+.sorbet-blue       {color: var(--sorbet-blue)}
+.sorbet-purple     {color: var(--sorbet-purple)}
+.sorbet-indigo     {color: var(--sorbet-purple)}
+.sorbet-magenta    {color: var(--sorbet-purple)}
+.sorbet-violet     {color: var(--sorbet-violet)}
+.sorbet-pink       {color: var(--sorbet-pink)}
+
+.sorbet-red-bg        {background-color: var(--sorbet-red)}
+.sorbet-orange-bg     {background-color: var(--sorbet-orange)}
+.sorbet-yellow-bg     {background-color: var(--sorbet-yellow)}
+.sorbet-lime-bg       {background-color: var(--sorbet-yellow)}
+.sorbet-green-bg      {background-color: var(--sorbet-green)}
+.sorbet-cyan-bg       {background-color: var(--sorbet-blue)}
+.sorbet-light-blue-bg {background-color: var(--sorbet-blue)}
+.sorbet-blue-bg       {background-color: var(--sorbet-blue)}
+.sorbet-purple-bg     {background-color: var(--sorbet-purple)}
+.sorbet-indigo-bg     {background-color: var(--sorbet-purple)}
+.sorbet-magenta-bg    {background-color: var(--sorbet-purple)}
+.sorbet-violet-bg     {background-color: var(--sorbet-violet)}
+.sorbet-pink-bg       {background-color: var(--sorbet-pink)}

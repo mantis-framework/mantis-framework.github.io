@@ -1,0 +1,48 @@
+/*
+	pastel color palette
+	hsl = (h, 100%, 90%)
+*/
+
+:root {
+	--pastel-red        : hsl(var(--hue-red)       , 100%, 90%);
+	--pastel-orange     : hsl(var(--hue-orange)    , 100%, 90%);
+	--pastel-yellow     : hsl(var(--hue-yellow)    , 100%, 90%);
+	--pastel-lime       : hsl(var(--hue-lime)      , 100%, 90%);
+	--pastel-green      : hsl(var(--hue-green)     , 100%, 90%);
+	--pastel-cyan       : hsl(var(--hue-cyan)      , 100%, 90%);
+	--pastel-light-blue : hsl(var(--hue-light-blue), 100%, 90%);
+	--pastel-blue       : hsl(var(--hue-blue)      , 100%, 90%);
+	--pastel-purple     : hsl(var(--hue-purple)    , 100%, 90%);
+	--pastel-indigo     : hsl(var(--hue-indigo)    , 100%, 90%);
+	--pastel-magenta    : hsl(var(--hue-magenta)   , 100%, 90%);
+	--pastel-violet     : hsl(var(--hue-violet)    , 100%, 90%);
+	--pastel-pink       : hsl(var(--hue-pink)      , 100%, 90%);
+}
+
+.pastel-red        {color: var(--pastel-red)}
+.pastel-orange     {color: var(--pastel-orange)}
+.pastel-yellow     {color: var(--pastel-yellow)}
+.pastel-lime       {color: var(--pastel-yellow)}
+.pastel-green      {color: var(--pastel-green)}
+.pastel-cyan       {color: var(--pastel-blue)}
+.pastel-light-blue {color: var(--pastel-blue)}
+.pastel-blue       {color: var(--pastel-blue)}
+.pastel-purple     {color: var(--pastel-purple)}
+.pastel-indigo     {color: var(--pastel-purple)}
+.pastel-magenta    {color: var(--pastel-purple)}
+.pastel-violet     {color: var(--pastel-violet)}
+.pastel-pink       {color: var(--pastel-pink)}
+
+.pastel-red-bg        {background-color: var(--pastel-red)}
+.pastel-orange-bg     {background-color: var(--pastel-orange)}
+.pastel-yellow-bg     {background-color: var(--pastel-yellow)}
+.pastel-lime-bg       {background-color: var(--pastel-yellow)}
+.pastel-green-bg      {background-color: var(--pastel-green)}
+.pastel-cyan-bg       {background-color: var(--pastel-blue)}
+.pastel-light-blue-bg {background-color: var(--pastel-blue)}
+.pastel-blue-bg       {background-color: var(--pastel-blue)}
+.pastel-purple-bg     {background-color: var(--pastel-purple)}
+.pastel-indigo-bg     {background-color: var(--pastel-purple)}
+.pastel-magenta-bg    {background-color: var(--pastel-purple)}
+.pastel-violet-bg     {background-color: var(--pastel-violet)}
+.pastel-pink-bg       {background-color: var(--pastel-pink)}

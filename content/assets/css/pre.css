@@ -1,0 +1,172 @@
+:root {
+	--bg-code: #1a1717; /*hsl(0deg, 0%, 12%, 0.25);*/
+	--gradient-code-bg: linear-gradient(var(--bg-code), var(--bg-code));
+	--gradient-border: linear-gradient(to bottom right, var(--rnbw-color-3), var(--rnbw-color-0));
+}
+
+cpbutton
+{
+	text-align: center;
+	z-index:99;
+	float:right !important;
+	/*position: relative;
+	right: 10px;*/
+	margin-left: 10px;
+	padding-left: 2px;
+	padding-right: 2px;
+	padding-top: 0px;
+	padding-bottom: 2px !important;
+	text-decoration: none;
+	background: #1f2021 !important;
+	border-radius:5px;
+	opacity: 0.5;
+
+	-webkit-user-select: none; /* Chrome/Safari */
+	-moz-user-select: none; /* Firefox */
+	-ms-user-select: none; /* IE10+ */
+}
+
+cpbutton:hover
+{
+	z-index:99;
+	opacity: 1.0;
+	cursor: pointer;
+}
+
+cpbutton:active
+{
+	z-index:99;
+	background: white !important;
+}
+
+pre.scroll
+{
+	max-height: 400px;
+	overflow-y: auto;
+}
+
+pre.inline
+{
+	display: inline-block !important;
+}
+
+pre.wrap
+{
+	white-space: pre-wrap;       /* css-3 */
+	white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+	white-space: -pre-wrap;      /* Opera 4-6 */
+	white-space: -o-pre-wrap;    /* Opera 7 */
+	word-wrap: break-word;       /* Internet Explorer 5.5+ */
+}
+
+pre.resize
+{
+	resize: both;
+}
+
+pre-old
+{
+	background-color: hsl(0deg, 0%, 12%, 0.5);/*#2d2d2d;*/
+	color: white;
+
+	white-space: pre-wrap;
+
+	text-align:left;
+	tab-size: 4;
+	border-radius: 4px;
+	min-width: 130px;
+	max-width: 90%;
+	overflow: auto;
+	overflow-x: auto;
+
+	font-family: oxygen, Ubuntu Mono, DejaVu Sans Mono, Liberation Mono, Consolas, Ubuntu Mono, Courier New;
+	font-size: 90%;
+
+	padding: 1em;
+	margin: 0 auto 1em;
+
+	border-image: linear-gradient(to bottom right, var(--rnbw-color-5), var(--rnbw-color-0)) 30;
+	border-width: 1px;
+	border-style: solid;
+}
+
+pre{
+	background-color: hsl(0deg, 0%, 12%, 0.25);
+	color: white;
+
+	white-space: pre-wrap;
+
+	text-align:left;
+	tab-size: 4;
+	min-width: 130px;
+	max-width: 85%;
+	overflow: auto;
+	overflow-x: auto;
+
+	font-family: oxygen, Ubuntu Mono, DejaVu Sans Mono, Liberation Mono, Consolas, Ubuntu Mono, Courier New;
+	font-size: 90%;
+
+	padding: 1em;
+	margin: 0 auto 1em;
+
+	border: solid 1px transparent;
+	border-radius: 4px;
+	background-image: var(--gradient-code-bg), 
+                      var(--gradient-border);
+	background-origin: border-box;
+	background-clip: padding-box, border-box; /*content-box, border-box;*/
+}
+
+#editor-container {
+	background: transparent;
+	max-width: 90%;
+	padding: 1em;
+	margin: 0 auto 1em;
+
+	border: solid 1px transparent;
+	border-radius: 4px;
+	background-image: var(--gradient-code-bg), 
+                      var(--gradient-border);
+	background-origin: border-box;
+	background-clip: padding-box, border-box; /*content-box, border-box;*/
+}
+
+#editor-content, #editor {
+	text-align:left;
+	tab-size: 4;
+	min-height: 200px;
+	min-width: 100%;
+
+	overflow: auto;
+	overflow-x: auto;
+
+	white-space: pre;
+	word-wrap: break-word;
+}
+
+#editor-content {
+	/*background-color: hsl(0deg, 0%, 12%, 0.5);*/
+	background-color: transparent;
+
+	padding: 0;
+	margin: 0;
+
+	z-index: 1;
+}
+
+
+#editor {
+	position: relative;
+	color: transparent; /*hsla(100deg, 50%, 50%, 0.25);*/
+	background: transparent;
+	caret-color: var(--rnbw-color-6);
+
+	margin-top: -200px;
+
+	z-index: 2;
+}
+
+#editor:focus {
+	outline: none;
+}
+

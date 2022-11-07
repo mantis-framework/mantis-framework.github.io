@@ -1,0 +1,55 @@
+<div class="menu-bars">
+  <i id="open-menu-icon" class="fa fa-bars-png fa-rnbw" onclick="show_menu()"></i>
+</div>
+
+<div id="menu-page">
+  <div class="menu-cross" >
+    <i id="close-menu-icon" class="fa fa-xmark-png fa-rnbw" onclick="close_menu()"></i>
+  </div>
+  
+  <nav id="nav" class="noselect">
+    <ul>
+      <li class="item li-menu li-dark">
+        <a class="item-link" href="@pathto(index)">home</a>
+      </li>
+      <li class="item li-menu li-dark has-submenu">
+        <a tabindex="0" href="#" class="submenu-link" onclick="toggle_submenu(0)">docs<i class="submenu-link-icon fa fa-angle-down-png fa-1x"></i></a>
+        <ul class="submenu" align="center">
+          <li class="subitem"><a href="#">item</a></li>
+          <li class="subitem"><a href="#">item</a></li>
+          <li class="subitem"><a href="#">item</a></li>
+          <li class="subitem"><a href="#">item</a></li>
+          <li class="subitem"><a href="#">item</a></li>
+        </ul>
+      </li>
+      <li class="item li-menu li-dark has-submenu">
+        <a tabindex="0" href="#" class="submenu-link" onclick="toggle_submenu(1)">submenu<i class="submenu-link-icon fa fa-angle-down-png fa-1x"></i></a>
+        <ul class="submenu">
+          <li class="subitem"><a href="#">item</a></li>
+          <li class="subitem"><a href="#">item</a></li>
+          <li class="subitem"><a href="#">item</a></li>
+          <li class="subitem"><a href="#">item</a></li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <p>hello</p>
+  <p>hello</p>
+  <p>hello</p>
+  <p>hello</p>
+  <p>hello</p>
+  <p>hello</p>
+  <p>hello</p>
+  <p>hello</p>
+  <p>hello</p>
+  <p>hello</p>
+  <p>hello</p>
+  <p>hello</p>
+  <p>hello</p>
+  <p>hello</p>
+  <p>hello</p>
+  <p>hello</p>
+  <p>hello</p>
+  <p>hello</p>
+</div>
