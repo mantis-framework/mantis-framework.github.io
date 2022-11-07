@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<title>mantis framework</title>
+		<meta name="description" content="">
+		
+		<meta charset="utf-8">
+		<meta name="viewport"    content="width=device-width, initial-scale=1">
+		<meta name="description" content="personal site of nicholas ham">
+		
+		<link rel="stylesheet" href="assets/css/bundled.css">
+		<link rel="icon" type="image/png" href="" media="print" onload="this.media='all'">
+	</head>
+
+	<body>
+		<div align="center">
+			<div class="menu-bars">
+			  <i id="open-menu-icon" class="fa fa-bars-png fa-rnbw" onclick="show_menu()"></i>
+			</div>
+			
+			<div id="menu-page">
+			  <div class="menu-cross" >
+			    <i id="close-menu-icon" class="fa fa-xmark-png fa-rnbw" onclick="close_menu()"></i>
+			  </div>
+			  
+			  <nav id="nav" class="noselect">
+			    <ul>
+			      <li class="item li-menu li-dark">
+			        <a class="item-link" href="index.html">home</a>
+			      </li>
+			      <li class="item li-menu li-dark has-submenu">
+			        <a tabindex="0" href="#" class="submenu-link" onclick="toggle_submenu(0)">docs<i class="submenu-link-icon fa fa-angle-down-png fa-1x"></i></a>
+			        <ul class="submenu" align="center">
+			          <li class="subitem"><a href="#">item</a></li>
+			          <li class="subitem"><a href="#">item</a></li>
+			          <li class="subitem"><a href="#">item</a></li>
+			          <li class="subitem"><a href="#">item</a></li>
+			          <li class="subitem"><a href="#">item</a></li>
+			        </ul>
+			      </li>
+			      <li class="item li-menu li-dark has-submenu">
+			        <a tabindex="0" href="#" class="submenu-link" onclick="toggle_submenu(1)">submenu<i class="submenu-link-icon fa fa-angle-down-png fa-1x"></i></a>
+			        <ul class="submenu">
+			          <li class="subitem"><a href="#">item</a></li>
+			          <li class="subitem"><a href="#">item</a></li>
+			          <li class="subitem"><a href="#">item</a></li>
+			          <li class="subitem"><a href="#">item</a></li>
+			        </ul>
+			      </li>
+			    </ul>
+			  </nav>
+			
+			  <p>hello</p>
+			  <p>hello</p>
+			  <p>hello</p>
+			  <p>hello</p>
+			  <p>hello</p>
+			  <p>hello</p>
+			  <p>hello</p>
+			  <p>hello</p>
+			  <p>hello</p>
+			  <p>hello</p>
+			  <p>hello</p>
+			  <p>hello</p>
+			  <p>hello</p>
+			  <p>hello</p>
+			  <p>hello</p>
+			  <p>hello</p>
+			  <p>hello</p>
+			  <p>hello</p>
+			</div>
+
+			<div id="content">
+<h1>mantis</h1>
+<h2>mantis</h2>
+<h3>mantis</h3>
+<h4>mantis</h4>
+<h5>mantis</h5>
+<h6>mantis</h6>
+
+<p>
+	sd f sdf sdf s dfsd f sdf sd fsd fsd f df df sdf df sf sf sd ad g  g gw e f sdf sdf sd fs d fsd fsd f df df sdf df sf sf sd ad g  g gw e f sdf sdf sd fs gs d f sdf sdf sf sd fs df sd fs df sdf sd f sdf sdf s dfsd f sdf sd fsd fsd f df df sdf df sf sf sd ad g  g gw e f sdf sdf df sd fs d fsd fsd f df df sdf df sf sf sd ad g  g gw e f sdf sdf sd fs gs d f sdf sdf sf sd fs df sd fs df sdf sd f sdf sdf s dfsd f sdf sd fsd fsd f df df sdf df sf sf sd ad g  g gw e f sdf s
+</p>
+
+<div id="editor-container" align="center">
+<div id="editor-content" class="microlight"></div>
+<div id="editor" contenteditable spellcheck="false" onkeyup="redraw_editor()" onkeydown="redraw_editor()">//edit me</div>
+</div>
+
+
+<pre class="microlight">
+using namespace std;
+
+int main() {
+	std::cout &lt;&lt; "hello, world!" &lt;&lt; std::endl;
+
+	for(auto i=0; i&lt;j -123423423410; ++i) {
+		for(std::size_t j=12; j>= 0; --j)
+			{std::cout &lt;&lt; "lolo there" &lt;&lt; std::endl;}
+	}
+
+	return 0;
+}
+
+
+array {{{}}}
+array {{{}}}
+array {+{-{}*}!}
+p::+ { color: red }
+{&lt;div>&lt;span>hello {{{{{{}}}}}}   &lt;/span>&lt;/div>}
+
+"this is a string"
+'c'
+</pre>
+
+<pre class="microlight lang-html linenums">
+&lt;!doctype html>
+&lt;html lang="en">
+	&lt;head>
+		@input("templates/head.template")
+	&lt;/head>
+
+	&lt;body>
+		&lt;div align="center">
+			@input("templates/menu.template")
+
+			&lt;div id="content">
+				@content
+
+				@//input("templates/footer.template")
+			&lt;/div>
+		&lt;/div>
+
+		&lt;script type="text/javascript" src="assets/js/bundled.js">&lt;/script>
+	&lt;/body>
+&lt;/html>
+</pre>
+
+				
+			</div>
+		</div>
+
+		<script type="text/javascript" src="../content/assets/js/microlight.js"></script>
+		<script type="text/javascript" src="assets/js/bundled.js"></script>
+	</body>
+</html>
