@@ -62,6 +62,8 @@ function is_brace(c) {
         // nodes to highlight
         microlighted = _document.getElementsByClassName(cls||'microlight');
 
+        alert("wtf");
+
         for (i = 0; el = microlighted[i++];) {
             cl = el.classList;
             is_html_tag = false;
@@ -163,14 +165,14 @@ function is_brace(c) {
                             // 1: keywords
                             'color:var(--sherbet-violet);',
                             // 2: punctuation
-                            brace_depth < 0 ? 'background: red' :
+                            /*brace_depth < 0 ? 'background: red' :
                             'color:' + (
                                 is_brace(prev1) || 
-                                (prev1 == '<' && is_html_tag) || 
-                                (prev1 == '>' && is_html_tag) || 
-                                (prev1 == '/' && prev2 == '<' && lang == lang_html) ? (brace_depth >= 0 ? "var(--rnbw-color-" + colors[brace_depth%colors.length] + ")" : 'red')
+                                (prev1 == '<' && is_html_tag && lang == lang_html) || 
+                                (prev1 == '>' && is_html_tag && lang == lang_html) || 
+                                (prev1 == '/' && prev2 == '<' && lang == lang_html) ? "var(--rnbw-color-" + colors[brace_depth%colors.length] + ")"
                             : prev1 == '-' && chr.match(/^[0-9]+$/) ? "var(--sherbet-orange)" 
-                            : "#c75656") + ';',
+                            : "#c75656") + ';',*/
                             // 3: strings and regexps
                             prev1 == '"' ? 'color:var(--sherbet-lime);' : 'color:var(--sherbet-blue);',
                             // 4: numbers

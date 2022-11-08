@@ -170,3 +170,34 @@ pre{
 	outline: none;
 }
 
+/*caret types*/
+.caret-bar > span {
+  animation: blink 1s step-end infinite;
+  border-left: 2px solid white;
+}
+
+.caret-block > span {
+  animation: blink 1s step-end infinite;
+  background-color: hsla(1, 1%, 100%, 1);
+  color: #000;
+}
+
+.caret-underscore > span {
+  animation: blink 1s step-end infinite;
+  border-bottom: 2px solid white;
+}
+
+@keyframes blink {
+  from,
+  to {
+  	color: white;
+    border-color: transparent;
+    background-color: transparent;
+  }
+  50% {
+  	color: transparent;
+    border-color: var(--rnbw-color);
+    background-color: var(--rnbw-color);
+  }
+}
+
