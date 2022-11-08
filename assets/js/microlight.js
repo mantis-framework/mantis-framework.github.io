@@ -9,15 +9,23 @@
  */
 
 function is_brace(c) {
-  //alert(c);
-  return (
-    c == '{' || 
-    c == '}' || 
-    c == '[' || 
-    c == ']' || 
-    c == '(' || 
-    c == ')'  
-  );
+    return (
+        c == '{' || 
+        c == '}' || 
+        c == '[' || 
+        c == ']' || 
+        c == '(' || 
+        c == ')'  
+    );
+}
+
+function is_whitespace(c) {
+    return (
+        c == ' '  ||
+        c == '\t' ||
+        c == '\n' ||
+        c == '\r'
+    );
 }
 
 (function (root, factory) {
@@ -30,8 +38,6 @@ function is_brace(c) {
     }
 }(this, function (exports) {
     // for better compression
-    const lang_html = 0;
-
     var _window       = window,
         _document     = document,
         appendChild   = 'appendChild',
@@ -43,13 +49,13 @@ function is_brace(c) {
         _3px_0px_5    = '3px 0px 5',
         brace         = ')',
 
-        lang          = -1,
-        html_tag_open = true,
+        is_at_fn      = false,
+        html_tag_open = false,
         is_html_tag   = false,
+        is_tag_name   = false,
         brace_depth   = 0,
-        keyword_type  = 0,
+        //keyword_type  = 0,
         colors = [0, 3, 6, 9, 1, 4, 7, 10, 2, 5, 8],
-        //colors = ['#ff00ee', '#04ff00', '#ff8c00', '#0073ff', '#cf3838', "orange", "blue", "red", "black", "yellow"],
 
         i,
         microlighted,
@@ -64,19 +70,11 @@ function is_brace(c) {
 
         for (i = 0; el = microlighted[i++];) {
             cl = el.classList;
-            is_html_tag = false;
+            is_at_fn = html_tag_open 
+                     = is_html_tag 
+                     = is_tag_name 
+                     = false;
             brace_depth = 0;
-            if(cl.contains("lang-html")) {
-                lang = 0; 
-                //alert("html specified");
-            }
-            else if(cl.contains("lang-css")) {
-                lang = 1;
-                //alert("css specified");
-            }
-            else
-                lang = -1;
-
 
             var text  = el.textContent,
                 pos   = 0,       // current position
@@ -105,14 +103,7 @@ function is_brace(c) {
                 lastTokenType,
                 // flag determining if token is multi-character
                 multichar,
-                node,
-
-                // calculating the colors for the style templates
-                colorArr = /(\d*\, \d*\, \d*)(, ([.\d]*))?/g.exec(
-                    _window.getComputedStyle(el).color
-                ),
-                pxColor = 'px rgba('+colorArr[1]+',',
-                alpha = colorArr[3]||1;
+                node;
 
             // running through characters and highlighting
             while (prev2 = prev1,
@@ -159,17 +150,18 @@ function is_brace(c) {
                             node = _document.createElement('span')
                         ).setAttribute('style', [
                             // 0: not formatted
-                            '',
+                            is_tag_name ? "color: var(--rnbw-color-" + colors[brace_depth%colors.length] + ")" : is_html_tag ? "color: var(--rnbw-color-11)" : is_at_fn ? "color:var(--neon-pink)" : 'color:white',
                             // 1: keywords
                             'color:var(--sherbet-violet);',
                             // 2: punctuation
-                            brace_depth < 0 ? 'background: red' :
+                            brace_depth < 0 ? 'color:var(--bg-content);background:red;padding:3px 0px 2px;-webkit-box-decoration-break:clone;box-decoration-break:clone;' :
+                            prev1 == '@' ? "color:var(--neon-pink)" :
                             'color:' + (
                                 is_brace(prev1) || 
                                 (prev1 == '<' && is_html_tag) || 
                                 (prev1 == '>' && is_html_tag) || 
-                                (prev1 == '/' && prev2 == '<' && lang == lang_html) ? (brace_depth >= 0 ? "var(--rnbw-color-" + colors[brace_depth%colors.length] + ")" : 'red')
-                            : prev1 == '-' && chr.match(/^[0-9]+$/) ? "var(--sherbet-orange)" 
+                                (prev1 == '/' && prev2 == '<') ? "var(--rnbw-color-" + colors[brace_depth%colors.length] + ")"
+                            : prev1 == '-' && chr.match(/^[0-9]+$/) ? "var(--rnbw-color-6)" 
                             : "#c75656") + ';',
                             // 3: strings and regexps
                             prev1 == '"' ? 'color:var(--sherbet-lime);' : 'color:var(--sherbet-blue);',
@@ -189,15 +181,13 @@ function is_brace(c) {
 
                             /^\d+$/[test](token) ? 4 :
 
-                            /^(div)$/[test](token) ? 4 :
-
                             // otherwise tokenType == 3, (key)word
                             // (1 if regexp matches, 0 otherwise)
-                            + /^(a(bstract|lias|nd|rguments|rray|s(m|sert)?|uto)|b(ase|egin|ool(ean)?|reak|yte)|c(ase|atch|har|hecked|lass|lone|ompl|onst|ontinue)|de(bugger|cimal|clare|f(ault|er)?|init|l(egate|ete)?)|do|double|e(cho|ls?if|lse(if)?|nd|nsure|num|vent|x(cept|ec|p(licit|ort)|te(nds|nsion|rn)))|f(allthrough|alse|inal(ly)?|ixed|loat|or(each)?|riend|rom|unc(tion)?)|global|goto|guard|i(f|mp(lements|licit|ort)|n(it|clude(_once)?|line|out|stanceof|t(erface|ernal)?)?|s)|l(ambda|et|ock|ong)|m(icrolight|odule|utable)|NaN|n(amespace|ative|ext|ew|il|ot|ull)|o(bject|perator|r|ut|verride)|p(ackage|arams|rivate|rotected|rotocol|ublic)|r(aise|e(adonly|do|f|gister|peat|quire(_once)?|scue|strict|try|turn))|s(byte|ealed|elf|hort|igned|izeof|tatic|tring|truct|ubscript|uper|ynchronized|witch)|t(emplate|hen|his|hrows?|ransient|rue|ry|ype(alias|def|id|name|of))|u(n(checked|def(ined)?|ion|less|signed|til)|se|sing)|v(ar|irtual|oid|olatile)|w(char_t|hen|here|hile|ith)|xor|yield)$/[test](token)
+                            + /^(a(bstract|lias|nd|rguments|rray|s(m|sert)?|uto)|b(ase|egin|ool(ean)?|reak|yte)|c(ase|atch|har|hecked|lass|lone|ompl|onst|ontinue)|de(bugger|cimal|clare|f(ault)?|init|l(egate|ete)?)|do|double|e(cho|ls?if|lse(if)?|nd|nsure|num|vent|x(cept|ec|p(licit|ort)|te(nds|nsion|rn)))|f(allthrough|alse|inal(ly)?|ixed|loat|or(each)?|riend|rom|unc(tion)?)|global|goto|guard|i(f|mp(lements|licit|ort)|n(it|clude(_once)?|line|out|stanceof|t(erface|ernal)?)?|s)|l(ambda|et|ock|ong)|m(icrolight|odule|utable)|NaN|n(amespace|ative|ext|ew|il|ot|ull)|o(bject|perator|r|ut|verride)|p(ackage|arams|rivate|rotected|rotocol|ublic)|r(aise|e(adonly|do|f|gister|peat|quire(_once)?|scue|strict|try|turn))|s(byte|ealed|elf|hort|igned|izeof|tatic|tring|truct|ubscript|uper|ynchronized|witch)|t(emplate|hen|his|hrows?|ransient|rue|ry|ype(alias|def|id|name|of))|u(n(checked|def(ined)?|ion|less|signed|til)|se|sing)|v(ar|irtual|oid|olatile)|w(char_t|hen|here|hile|ith)|xor|yield)$/[test](token)
                         ]);
 
                         //if(tokenType == 3)
-                          //alert(token);
+                          //alert(token + " " + tokenType);
 
                         node[appendChild](_document.createTextNode(token));
                     }
@@ -241,41 +231,75 @@ function is_brace(c) {
                     ][--tokenType]);
                 }
 
-                if(lang == lang_html && is_html_tag && prev1 == '>') {
-                    if(html_tag_open)
+                if(prev1 == '@' && !is_whitespace(chr) && !is_brace(chr))
+                    is_at_fn = true;
+                else if(is_at_fn && (is_whitespace(chr) || is_brace(chr)))
+                    is_at_fn = false;
+
+                if(is_tag_name && (is_whitespace(chr) || is_brace(chr)))
+                    is_tag_name = false;
+
+                if(is_html_tag && prev1 == '>') {
+                    is_html_tag = false;
+                    is_tag_name = false;
+                    if(html_tag_open) {
                         ++brace_depth;
+                    }
                 }
 
 
-                if(lang == lang_html && chr == '<') {
+                if(chr == '<') {
                     if(next1 == '/'){
                         is_html_tag = true;
+                        is_tag_name = true;
                         html_tag_open = false; 
                         --brace_depth;
                     }
                     else if(
+                        next1 == '!' ||
                         ('a' <= next1 && next1 <= 'z') ||
                         ('A' <= next1 && next1 <= 'Z') 
                     ) {
-                        //is_html_tag = true;
-                        //html_tag_open = true;
+                        let depth = 0;
+
                         for(let x=pos+1; x<text.length; ++x) {
-                            if(text[x] == '>') {
+                            if(!depth && text[x] == '>') {
                                 is_html_tag = true;
                                 html_tag_open = true;
+                                is_tag_name = true;
                                 break;
                             }
                             else if(
-                                !('a' <= text[x] && text[x] <= 'z') &&
-                                !('A' <= text[x] && text[x] <= 'Z') &&
-                                !('0' <= text[x] && text[x] <= '9') &&
-                                text[x] != '='  && text[x] != '.' &&
-                                text[x] != ' ' && text[x] != '\t' &&
-                                text[x] != '"' && text[x] != '/'
+                                text[x] == '"' || 
+                                text[x] == '\''
                             ) {
-                                alert(text[x]);
+                                let end_quote = text[x];
+                                while(
+                                    ++x < text.length && 
+                                    text[x] != end_quote
+                                )
+                                    if(text[x] == '\\')
+                                        ++x;
+                            }
+                            else if(!depth && (
+                                text[x] == ';' || 
+                                text[x] == '}' ||
+                                text[x] == ']'
+                            )) {
                                 break; 
                             }
+                            else if(
+                                text[x] == '{' ||
+                                text[x] == '<' ||
+                                text[x] == '['
+                            )
+                                ++depth;
+                            else if(
+                                text[x] == '}' ||
+                                text[x] == '>' ||
+                                text[x] == ']'
+                            )
+                                --depth;
                         }
                     }
                 }
