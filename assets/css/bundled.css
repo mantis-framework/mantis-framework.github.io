@@ -647,13 +647,12 @@ pre.inline
 	display: inline-block !important;
 }
 
-pre.wrap
-{
-	white-space: pre-wrap;       /* css-3 */
-	white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
-	white-space: -pre-wrap;      /* Opera 4-6 */
-	white-space: -o-pre-wrap;    /* Opera 7 */
-	word-wrap: break-word;       /* Internet Explorer 5.5+ */
+pre.wrap, .pre-wrap {
+	white-space:      pre-wrap !important;  /* css-3 */
+	white-space: -moz-pre-wrap !important;  /* ff */
+	white-space:     -pre-wrap !important;  /* opera 4-6 */
+	white-space:   -o-pre-wrap !important;  /* opera 7 */
+	word-wrap:      break-word !important;  /* ie 5.5+ */
 }
 
 pre.resize
@@ -661,50 +660,28 @@ pre.resize
 	resize: both;
 }
 
-pre-old
-{
-	background-color: hsl(0deg, 0%, 12%, 0.5);/*#2d2d2d;*/
-	color: white;
-
-	white-space: pre-wrap;
-
-	text-align:left;
-	tab-size: 4;
-	border-radius: 4px;
-	min-width: 130px;
-	max-width: 90%;
-	overflow: auto;
-	overflow-x: auto;
-
-	font-family: oxygen, Ubuntu Mono, DejaVu Sans Mono, Liberation Mono, Consolas, Ubuntu Mono, Courier New;
-	font-size: 90%;
-
-	padding: 1em;
-	margin: 0 auto 1em;
-
-	border-image: linear-gradient(to bottom right, var(--rnbw-color-5), var(--rnbw-color-0)) 30;
-	border-width: 1px;
-	border-style: solid;
-}
-
 pre{
-	background-color: hsl(0deg, 0%, 12%, 0.25);
 	color: white;
-
-	white-space: pre-wrap;
 
 	text-align:left;
 	tab-size: 4;
-	min-width: 130px;
-	max-width: 85%;
-	overflow: auto;
-	overflow-x: auto;
+	min-height: 200px;
+	max-width: calc(90% - 30px);
+
+	overflow-y: auto;
+	overflow-x: scroll;
+
+	margin: 0 auto 15px;
+	padding: 15px;
 
 	font-family: oxygen, Ubuntu Mono, DejaVu Sans Mono, Liberation Mono, Consolas, Ubuntu Mono, Courier New;
 	font-size: 90%;
 
-	padding: 1em;
-	margin: 0 auto 1em;
+	white-space:      pre;  /* css-3 */
+	white-space: -moz-pre;  /* ff */
+	white-space:     -pre;  /* opera 4-6 */
+	white-space:   -o-pre;  /* opera 7 */
+	word-wrap:     normal;  /* ie 5.5+ */
 
 	border: solid 1px transparent;
 	border-radius: 4px;
@@ -716,9 +693,9 @@ pre{
 
 #editor-container {
 	background: transparent;
+
 	max-width: 90%;
-	padding: 1em;
-	margin: 0 auto 1em;
+	margin: 0 auto 15px;
 
 	font-family: oxygen, Ubuntu Mono, DejaVu Sans Mono, Liberation Mono, Consolas, Ubuntu Mono, Courier New;
 	font-size: 90%;
@@ -732,41 +709,36 @@ pre{
 }
 
 #editor-content, #editor {
+	background: transparent;
 	text-align:left;
 	tab-size: 4;
 	min-height: 200px;
-	min-width: 100%;
 
-	padding: 0;
-	margin: 0;
+	overflow-y: visible;
+	overflow-x: scroll;
 
-	overflow: visible;
-	overflow-x: auto;
+	margin: 0px auto 0px;
+	padding: 15px;
 
-	white-space: pre-wrap;       /* css-3 */
-	white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
-	white-space: -pre-wrap;      /* Opera 4-6 */
-	white-space: -o-pre-wrap;    /* Opera 7 */
-	word-wrap: break-word;       /* Internet Explorer 5.5+ */
+	white-space:      pre;  /* css-3 */
+	white-space: -moz-pre;  /* ff */
+	white-space:     -pre;  /* opera 4-6 */
+	white-space:   -o-pre;  /* opera 7 */
+	word-wrap:     normal;  /* ie 5.5+ */
 }
 
 #editor-content {
-	/*background-color: hsl(0deg, 0%, 12%, 0.5);*/
-	background-color: transparent;
-
 	z-index: 1;
 }
 
-
 #editor {
-	position: relative;
-	color: transparent; /*hsla(100deg, 50%, 50%, 0.25);*/
-	background: transparent;
+	z-index: 2;
+
+	color: transparent;
 	caret-color: var(--rnbw-color-6);
 
+	position: relative;
 	margin-top: -200px;
-
-	z-index: 2;
 }
 
 #editor:focus {
