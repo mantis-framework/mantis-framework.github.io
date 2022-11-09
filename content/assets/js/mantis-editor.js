@@ -12,9 +12,9 @@ const bsKey    = 8,
       rightKey = 39;
 
 function new_editor_size() {
-	editor.style.marginTop = - editor.clientHeight + "px";
+	editor.style.marginTop = - editor_content.clientHeight + "px";
 }
-new ResizeObserver(() => new_editor_size()).observe(editor);
+new ResizeObserver(() => new_editor_size()).observe(editor_content);
 
 function redraw_editor() {
 	editor_content.innerHTML = 

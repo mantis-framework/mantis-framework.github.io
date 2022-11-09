@@ -10,8 +10,8 @@
 </p>
 
 <div id="editor-container" align="center">
-<div id="editor-content" class="microlight"></div>
-<div id="editor" contenteditable spellcheck="false" onkeyup="redraw_editor()" onkeydown="redraw_editor()">//edit me</div>
+<div id="editor-content" class="microlight pre-wrap" contenteditable spellcheck="false"></div>
+<div id="editor" class="pre-wrap" contenteditable spellcheck="false" onkeyup="redraw_editor()" onkeydown="redraw_editor()">//edit me</div>
 </div>
 
 
