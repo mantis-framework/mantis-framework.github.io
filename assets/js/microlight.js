@@ -279,6 +279,23 @@ function is_whitespace(c) {
                 if(is_tag_name && (is_whitespace(chr) || is_brace(chr)))
                     is_tag_name = false;
 
+                
+
+                if(prev1 == '{' || prev1 == '[' || prev1 == '(') {
+                    ++brace_depth;
+                    braces.push(prev1);
+                }
+
+                if(chr == '}' || chr == ']' || chr == ')') {
+                	--brace_depth;
+                    valid_braces = (
+                    	(chr == '}' && braces[brace_depth] == '{') ||
+                    	(chr == ']' && braces[brace_depth] == '[') ||
+                    	(chr == ')' && braces[brace_depth] == '(') 
+                    );
+                    braces.pop();
+                }
+
                 if(is_html_tag && prev1 == '>') {
                     is_html_tag = false;
                     is_tag_name = false;
@@ -294,7 +311,8 @@ function is_whitespace(c) {
                         is_html_tag = true;
                         is_tag_name = true;
                         html_tag_open = false; 
-                        valid_braces = (braces[--brace_depth] == '<');
+                        --brace_depth;
+                        valid_braces = (braces[brace_depth] == '<');
 	                    braces.pop();
                     }
                     else if(
@@ -344,21 +362,6 @@ function is_whitespace(c) {
                                 --depth;
                         }
                     }
-                }
-
-                if(prev1 == '{' || prev1 == '[' || prev1 == '(') {
-                    ++brace_depth;
-                    braces.push(prev1);
-                }
-
-                if(chr == '}' || chr == ']' || chr == ')') {
-                    valid_braces = (
-                    	(chr == '}' && braces[--brace_depth] == '{') ||
-                    	(chr == ']' && braces[brace_depth] == '[') ||
-                    	(chr == ')' && braces[brace_depth] == '(') 
-                    );
-                    alert(braces[brace_depth]);
-                    braces.pop();
                 }
 
                 token += chr;
