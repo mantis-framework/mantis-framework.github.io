@@ -237,6 +237,7 @@ function is_whitespace(c) {
                     // initializing a new token
                     token = '';
                     keyword_type = 0;
+                    valid_braces = true;
 
                     // determining the new token type (going up the
                     // list until matching a token type start
