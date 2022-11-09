@@ -123,6 +123,9 @@ pre{
 	padding: 1em;
 	margin: 0 auto 1em;
 
+	font-family: oxygen, Ubuntu Mono, DejaVu Sans Mono, Liberation Mono, Consolas, Ubuntu Mono, Courier New;
+	font-size: 90%;
+
 	border: solid 1px transparent;
 	border-radius: 4px;
 	background-image: var(--gradient-code-bg), 
@@ -137,11 +140,14 @@ pre{
 	min-height: 200px;
 	min-width: 100%;
 
-	overflow: auto;
+	overflow: visible;
 	overflow-x: auto;
 
-	white-space: pre;
-	word-wrap: break-word;
+	white-space: pre-wrap;       /* css-3 */
+	white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+	white-space: -pre-wrap;      /* Opera 4-6 */
+	white-space: -o-pre-wrap;    /* Opera 7 */
+	word-wrap: break-word;       /* Internet Explorer 5.5+ */
 }
 
 #editor-content {

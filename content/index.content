@@ -59,8 +59,8 @@ p::+ { color: red }
 		</div>
 
 		<script defer
-			type="text/javascript" 
-			src="\@pathto(output/assets/js/bundled.js)"
+			type = "text/javascript" 
+			src  = "\@pathto(output/assets/js/bundled.js)"
 		></script>
 	</body>
 </html>

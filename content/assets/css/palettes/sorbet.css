@@ -1,24 +1,24 @@
 /*
 	sorbet color palette
-	hsl = (h, 89%, 83%)
-	hsl = (h, 82%, 73%)
 	hsl = (h, 63%, 52%)
+	hsl = (h, 82%, 73%)
+	hsl = (h, 89%, 83%)
 */
 
 :root {
-	--sorbet-red        : hsl(var(--hue-red)       , 89%, 83%);
-	--sorbet-orange     : hsl(var(--hue-orange)    , 89%, 83%);
-	--sorbet-yellow     : hsl(var(--hue-yellow)    , 89%, 83%);
-	--sorbet-lime       : hsl(var(--hue-lime)      , 89%, 83%);
-	--sorbet-green      : hsl(var(--hue-green)     , 89%, 83%);
-	--sorbet-cyan       : hsl(var(--hue-cyan)      , 89%, 83%);
-	--sorbet-light-blue : hsl(var(--hue-light-blue), 89%, 83%);
-	--sorbet-blue       : hsl(var(--hue-blue)      , 89%, 83%);
-	--sorbet-purple     : hsl(var(--hue-purple)    , 89%, 83%);
-	--sorbet-indigo     : hsl(var(--hue-indigo)    , 89%, 83%);
-	--sorbet-magenta    : hsl(var(--hue-magenta)   , 89%, 83%);
-	--sorbet-violet     : hsl(var(--hue-violet)    , 89%, 83%);
-	--sorbet-pink       : hsl(var(--hue-pink)      , 89%, 83%);
+	--sorbet-red        : hsl(var(--hue-red)       , 63%, 52%);
+	--sorbet-orange     : hsl(var(--hue-orange)    , 63%, 52%);
+	--sorbet-yellow     : hsl(var(--hue-yellow)    , 63%, 52%);
+	--sorbet-lime       : hsl(var(--hue-lime)      , 63%, 52%);
+	--sorbet-green      : hsl(var(--hue-green)     , 63%, 52%);
+	--sorbet-cyan       : hsl(var(--hue-cyan)      , 63%, 52%);
+	--sorbet-light-blue : hsl(var(--hue-light-blue), 63%, 52%);
+	--sorbet-blue       : hsl(var(--hue-blue)      , 63%, 52%);
+	--sorbet-purple     : hsl(var(--hue-purple)    , 63%, 52%);
+	--sorbet-indigo     : hsl(var(--hue-indigo)    , 63%, 52%);
+	--sorbet-magenta    : hsl(var(--hue-magenta)   , 63%, 52%);
+	--sorbet-violet     : hsl(var(--hue-violet)    , 63%, 52%);
+	--sorbet-pink       : hsl(var(--hue-pink)      , 63%, 52%);
 }
 
 .sorbet-red        {color: var(--sorbet-red)}

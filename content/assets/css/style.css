@@ -37,6 +37,11 @@ body
 	min-height: 100%;
 }
 
+::-moz-selection {
+	color: var(--bg-content);
+	background-color: var(--rnbw-color-6);
+}
+
 ::selection {
 	color: var(--bg-content);
 	background-color: var(--rnbw-color-6);

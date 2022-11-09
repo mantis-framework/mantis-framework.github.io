@@ -11,14 +11,26 @@ const bsKey    = 8,
       leftKey  = 37,
       rightKey = 39;
 
-function redraw_editor() {
-	editor_content.innerHTML = editor.innerText.replaceAll("<", "&lt;");
-	microlight.reset();
-	editor_content.innerHTML = editor_content.innerHTML.replaceAll("\n\n", "\n");
+function new_editor_size() {
+	editor.style.marginTop = - editor.clientHeight + "px";
 }
-editor_content.innerHTML = editor.innerText.replaceAll("<", "&lt;");
-microlight.reset();
-//redraw_editor();
+new ResizeObserver(() => new_editor_size()).observe(editor);
+
+function redraw_editor() {
+	editor_content.innerHTML = 
+		editor.innerText.replaceAll(
+			"<", "&lt;").replaceAll(
+			"-", "&#8288;-&#8288;").replaceAll(
+			"\n\n", "\n") + '\n';
+	microlight.reset();
+}
+//somehow this fixes newline issues when loading content with newlines
+editor.innerHTML = 
+	editor.innerText.replaceAll(
+		"\n\n", "<div><br></div>").replaceAll(
+		"\n", "<div></div>");
+//microlight.reset();
+redraw_editor();
 
 @/*document.addEventListener('keydown', function(e){
 	let key = e.keyCode;
