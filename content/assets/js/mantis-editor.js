@@ -1,3 +1,4 @@
+let editor_container = document.getElementById("editor-container");
 let editor_content = document.getElementById("editor-content");
 let editor = document.getElementById('editor');
 
@@ -11,10 +12,10 @@ const bsKey    = 8,
       leftKey  = 37,
       rightKey = 39;
 
-function new_editor_size() {
-	editor.style.marginTop = - editor_content.clientHeight + "px";
+function new_editor_content_size() {
+	editor.style.marginTop = - (editor_content.clientHeight) + "px";
 }
-new ResizeObserver(() => new_editor_size()).observe(editor_content);
+new ResizeObserver(() => new_editor_content_size()).observe(editor_content);
 
 function redraw_editor() {
 	editor_content.innerHTML = 

@@ -104,6 +104,11 @@ ul li {
 	height: 0px; /*5px;*/
 }
 
+pre::-webkit-scrollbar {
+	border-radius: 5px;
+	height: 7px;
+}
+
 /* Track */
 ::-webkit-scrollbar-track {
  	/*background: var(--bg-content); */
@@ -112,13 +117,22 @@ ul li {
  
 /* Handle */
 ::-webkit-scrollbar-thumb {
+	border-radius: 5px;
 	/*border-radius: 4px;*/
  	background: var(--rnbw-color);
-	border-left: 9px var(--bg-content) solid;
+	/*border-left: 9px var(--bg-content) solid;*/
+}
+
+pre::-webkit-scrollbar-thumb {
+	border-radius: 5px;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
  	background: var(--rnbw-color-hover);
- 	border-left: 0px;
+ 	/*border-left: 0px;*/
+}
+
+::-webkit-scrollbar-corner {
+	background: transparent;
 }
