@@ -49,12 +49,13 @@ function is_whitespace(c) {
         _3px_0px_5    = '3px 0px 5',
         brace         = ')',
 
+        is_str        = false,
         is_at_fn      = false,
         html_tag_open = false,
         is_html_tag   = false,
         is_tag_name   = false,
         brace_depth   = 0,
-        //keyword_type  = 0,
+        keyword_type  = 0,
         colors = [0, 3, 6, 9, 1, 4, 7, 10, 2, 5, 8],
 
         i,
@@ -70,11 +71,13 @@ function is_whitespace(c) {
 
         for (i = 0; el = microlighted[i++];) {
             cl = el.classList;
-            is_at_fn = html_tag_open 
-                     = is_html_tag 
-                     = is_tag_name 
-                     = false;
+            is_str = is_at_fn 
+                   = html_tag_open 
+                   = is_html_tag 
+                   = is_tag_name 
+                   = false;
             brace_depth = 0;
+            keyword_type = 0;
 
             var text  = el.textContent,
                 pos   = 0,       // current position
@@ -150,11 +153,30 @@ function is_whitespace(c) {
                             node = _document.createElement('span')
                         ).setAttribute('style', [
                             // 0: not formatted
-                            is_tag_name ? "color: var(--rnbw-color-" + colors[brace_depth%colors.length] + ")" : is_html_tag ? "color: var(--rnbw-color-11)" : is_at_fn ? "color:var(--neon-pink)" : 'color:white',
+                            is_tag_name 
+                                ? "color: var(--rnbw-color-" + colors[brace_depth%colors.length] + ")" 
+                            : is_html_tag 
+                                ? "color: var(--rnbw-color-11)"
+                            : is_at_fn 
+                                ? "color:var(--neon-pink)" 
+                            //inferred types
+                            : /^(auto|let|var)$/[test](token)
+                            	? "color:yellow"
+                            //types
+                            : /^(b(ool(|ean))|char|double|int(|eger)|num|s(ize_t|tring))$/[test](token)
+                            	? "color:var(--sorbet-light-blue)"
+                           	//loops and control statements
+                           	: /^(do|el(se|if)|for(|each)|if|switch|while)$/[test](token)
+                            	? "color:var(--sorbet-indigo)"
+                            //key fns
+                           	: /^(main)$/[test](token)
+                            	? "color:var(--sorbet-orange)"
+                           	//
+                            : 'color:white',
                             // 1: keywords
-                            'color:var(--sherbet-violet);',
+                            'color:var(--sorbet-violet);',
                             // 2: punctuation
-                            brace_depth < 0 ? 'color:var(--bg-content);background:red;padding:3px 0px 2px;-webkit-box-decoration-break:clone;box-decoration-break:clone;' :
+                            brace_depth < 0 ? 'color:var(--bg-content);background:var(--sorbet-red);padding:1px 0px 2px 0px;-webkit-box-decoration-break:clone;box-decoration-break:clone;' :
                             prev1 == '@' ? "color:var(--neon-pink)" :
                             'color:' + (
                                 is_brace(prev1) || 
@@ -164,18 +186,22 @@ function is_whitespace(c) {
                             : prev1 == '-' && chr.match(/^[0-9]+$/) ? "var(--rnbw-color-6)" 
                             : "#c75656") + ';',
                             // 3: strings and regexps
-                            prev1 == '"' ? 'color:var(--sherbet-lime);' : 'color:var(--sherbet-blue);',
+                            (is_str || prev1 == '"') ? 'color:var(--sorbet-lime);' : 'color:var(--sherbet-blue);',
                             // 4: numbers
                             'color: var(--rnbw-color)',
                             // 5: comments
-                            'color:#9e9e9e;'
+                            'color:#9e9e9e;',
+                            // 6: types
+                            'color: black;'
                         ][
                             // not formatted
                             !tokenType ? 0 :
                             // punctuation
                             tokenType < 3 ? 2 :
+                            //types
+                            tokenType == 11 ? 6 :
                             // comments
-                            tokenType > 6 ? 5 :
+                            tokenType > 6 && tokenType < 11 ? 5 :
                             // regex and strings
                             tokenType > 3 ? 3 :
 
@@ -183,8 +209,12 @@ function is_whitespace(c) {
 
                             // otherwise tokenType == 3, (key)word
                             // (1 if regexp matches, 0 otherwise)
-                            + /^(a(bstract|lias|nd|rguments|rray|s(m|sert)?|uto)|b(ase|egin|ool(ean)?|reak|yte)|c(ase|atch|har|hecked|lass|lone|ompl|onst|ontinue)|de(bugger|cimal|clare|f(ault)?|init|l(egate|ete)?)|do|double|e(cho|ls?if|lse(if)?|nd|nsure|num|vent|x(cept|ec|p(licit|ort)|te(nds|nsion|rn)))|f(allthrough|alse|inal(ly)?|ixed|loat|or(each)?|riend|rom|unc(tion)?)|global|goto|guard|i(f|mp(lements|licit|ort)|n(it|clude(_once)?|line|out|stanceof|t(erface|ernal)?)?|s)|l(ambda|et|ock|ong)|m(icrolight|odule|utable)|NaN|n(amespace|ative|ext|ew|il|ot|ull)|o(bject|perator|r|ut|verride)|p(ackage|arams|rivate|rotected|rotocol|ublic)|r(aise|e(adonly|do|f|gister|peat|quire(_once)?|scue|strict|try|turn))|s(byte|ealed|elf|hort|igned|izeof|tatic|tring|truct|ubscript|uper|ynchronized|witch)|t(emplate|hen|his|hrows?|ransient|rue|ry|ype(alias|def|id|name|of))|u(n(checked|def(ined)?|ion|less|signed|til)|se|sing)|v(ar|irtual|oid|olatile)|w(char_t|hen|here|hile|ith)|xor|yield)$/[test](token)
+                            + /^(a(bstract|lias|nd|rguments|rray|s(m|sert)?)|b(ase|egin|reak|yte)|c(ase|atch|hecked|lass|lone|ompl|onst|ontinue|out)|de(bugger|cimal|clare|f(ault)?|init|l(egate|ete)?)|e(cho|nd(l)?|nsure|vent|x(cept|ec|p(licit|ort)|te(nds|nsion|rn)))|f(allthrough|alse|inal(ly)?|ixed|loat|riend|rom|unc(tion)?)|global|goto|guard|i(mp(lements|licit|ort)|n(sert|clude(_once)?|line|out|stanceof|t(erface|ernal))?|s)|l(ambda|et|ock|ong)|m(icrolight|odule|utable)|NaN|n(amespace|ative|ext|ew|il|ot|ull)|o(bject|perator|r|ut|verride)|p(ackage|arams|rivate|rotected|rotocol|ublic)|r(aise|e(adonly|do|f|gister|peat|quire(_once)?|scue|strict|try|turn))|s(byte|ealed|elf|hort|igned|izeof|tatic|td|truct|ubscript|uper|ynchronized)|t(emplate|hen|his|hrows?|ransient|rue|ry|ype(alias|def|id|name|of))|u(n(checked|def(ined)?|ion|less|signed|til)|se|sing)|v(ar|irtual|oid|olatile)|w(char_t|hen|here|ith)|xor|yield)$/[test](token)
                         ]);
+
+                        //if(keyword_type)
+                        //	alert(keyword_type);
+                        //	alert(/^(fuckyeah)$/[test](token));
 
                         //if(tokenType == 3)
                           //alert(token + " " + tokenType);
@@ -200,6 +230,7 @@ function is_whitespace(c) {
 
                     // initializing a new token
                     token = '';
+                    keyword_type = 0;
 
                     // determining the new token type (going up the
                     // list until matching a token type start
@@ -230,6 +261,9 @@ function is_whitespace(c) {
                         chr == '#'          // 10: hash-style comment
                     ][--tokenType]);
                 }
+
+                if(chr == '"' && prev1 != '\\')
+                	is_str = !is_str;
 
                 if(prev1 == '@' && !is_whitespace(chr) && !is_brace(chr))
                     is_at_fn = true;
