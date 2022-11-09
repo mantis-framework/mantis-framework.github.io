@@ -55,6 +55,8 @@ function is_whitespace(c) {
         is_html_tag   = false,
         is_tag_name   = false,
         brace_depth   = 0,
+        valid_braces  = true,
+        braces        = [],
         keyword_type  = 0,
         colors = [0, 3, 6, 9, 1, 4, 7, 10, 2, 5, 8],
 
@@ -76,6 +78,8 @@ function is_whitespace(c) {
                    = is_html_tag 
                    = is_tag_name 
                    = false;
+            valid_braces = true;
+            braces = [];
             brace_depth = 0;
             keyword_type = 0;
 
@@ -154,7 +158,9 @@ function is_whitespace(c) {
                         ).setAttribute('style', [
                             // 0: not formatted
                             is_tag_name 
-                                ? "color: var(--rnbw-color-" + colors[brace_depth%colors.length] + ")" 
+                            	? valid_braces
+                            		? "color: var(--rnbw-color-" + colors[brace_depth%colors.length] + ")" 
+                            		: 'color:var(--bg-content);background:var(--sorbet-red);padding:1px 0px 2px 0px;-webkit-box-decoration-break:clone;box-decoration-break:clone;'
                             : is_html_tag 
                                 ? "color: var(--rnbw-color-11)"
                             : is_at_fn 
@@ -176,7 +182,7 @@ function is_whitespace(c) {
                             // 1: keywords
                             'color:var(--sorbet-violet);',
                             // 2: punctuation
-                            brace_depth < 0 ? 'color:var(--bg-content);background:var(--sorbet-red);padding:1px 0px 2px 0px;-webkit-box-decoration-break:clone;box-decoration-break:clone;' :
+                            brace_depth < 0 || !valid_braces ? 'color:var(--bg-content);background:var(--sorbet-red);padding:1px 0px 2px 0px;-webkit-box-decoration-break:clone;box-decoration-break:clone;' :
                             prev1 == '@' ? "color:var(--neon-pink)" :
                             'color:' + (
                                 is_brace(prev1) || 
@@ -278,6 +284,7 @@ function is_whitespace(c) {
                     is_tag_name = false;
                     if(html_tag_open) {
                         ++brace_depth;
+                        braces.push('<');
                     }
                 }
 
@@ -287,7 +294,8 @@ function is_whitespace(c) {
                         is_html_tag = true;
                         is_tag_name = true;
                         html_tag_open = false; 
-                        --brace_depth;
+                        valid_braces = (braces[--brace_depth] == '<');
+	                    braces.pop();
                     }
                     else if(
                         next1 == '!' ||
@@ -338,11 +346,20 @@ function is_whitespace(c) {
                     }
                 }
 
-                if(prev1 == '{' || prev1 == '[' || prev1 == '(')
+                if(prev1 == '{' || prev1 == '[' || prev1 == '(') {
                     ++brace_depth;
+                    braces.push(prev1);
+                }
 
-                if(chr == '}' || chr == ']' || chr == ')')
-                    --brace_depth;
+                if(chr == '}' || chr == ']' || chr == ')') {
+                    valid_braces = (
+                    	(chr == '}' && braces[--brace_depth] == '{') ||
+                    	(chr == ']' && braces[brace_depth] == '[') ||
+                    	(chr == ')' && braces[brace_depth] == '(') 
+                    );
+                    alert(braces[brace_depth]);
+                    braces.pop();
+                }
 
                 token += chr;
             }
