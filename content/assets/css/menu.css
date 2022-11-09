@@ -99,13 +99,3 @@ nav a {
 .subitem a:hover {
   /*color: #14bdff;*/
 }
-
-/* Handle */
-#menu-page::-webkit-scrollbar-thumb {
-  border-left: 9px var(--bg-menu) solid;
-}
-
-/* Handle on hover */
-#menu-page::-webkit-scrollbar-thumb:hover {
-  border-left: 0px;
-}
