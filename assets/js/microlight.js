@@ -161,7 +161,7 @@ function is_whitespace(c) {
                                 ? "color:var(--neon-pink)" 
                             //inferred types
                             : /^(auto|let|var)$/[test](token)
-                            	? "color:yellow"
+                            	? "color:var(--sorbet-cyan)"
                             //types
                             : /^(b(ool(|ean))|char|double|int(|eger)|num|s(ize_t|tring))$/[test](token)
                             	? "color:var(--sorbet-light-blue)"
@@ -209,7 +209,7 @@ function is_whitespace(c) {
 
                             // otherwise tokenType == 3, (key)word
                             // (1 if regexp matches, 0 otherwise)
-                            + /^(a(bstract|lias|nd|rguments|rray|s(m|sert)?)|b(ase|egin|reak|yte)|c(ase|atch|hecked|lass|lone|ompl|onst|ontinue|out)|de(bugger|cimal|clare|f(ault)?|init|l(egate|ete)?)|e(cho|nd(l)?|nsure|vent|x(cept|ec|p(licit|ort)|te(nds|nsion|rn)))|f(allthrough|alse|inal(ly)?|ixed|loat|riend|rom|unc(tion)?)|global|goto|guard|i(mp(lements|licit|ort)|n(sert|clude(_once)?|line|out|stanceof|t(erface|ernal))?|s)|l(ambda|et|ock|ong)|m(icrolight|odule|utable)|NaN|n(amespace|ative|ext|ew|il|ot|ull)|o(bject|perator|r|ut|verride)|p(ackage|arams|rivate|rotected|rotocol|ublic)|r(aise|e(adonly|do|f|gister|peat|quire(_once)?|scue|strict|try|turn))|s(byte|ealed|elf|hort|igned|izeof|tatic|td|truct|ubscript|uper|ynchronized)|t(emplate|hen|his|hrows?|ransient|rue|ry|ype(alias|def|id|name|of))|u(n(checked|def(ined)?|ion|less|signed|til)|se|sing)|v(ar|irtual|oid|olatile)|w(char_t|hen|here|ith)|xor|yield)$/[test](token)
+                            + /^(a(bstract|lias|nd|rguments|rray|s(m|sert)?)|b(ase|egin|reak|yte)|c(ase|atch|hecked|lass|lone|ompl|onst|ontinue|out)|de(bugger|cimal|clare|f(ault)?|init|l(egate|ete)?)|e(cho|nd(l)?|nsure|vent|x(cept|ec|p(licit|ort)|te(nds|nsion|rn)))|f(allthrough|alse|inal(ly)?|ixed|loat|riend|rom|unc(tion)?)|global|goto|guard|i(mp(lements|licit|ort)|n(sert|clude(_once)?|line|out|stanceof|t(erface|ernal))?|s)|l(ambda|ock|ong)|m(icrolight|odule|utable)|NaN|n(amespace|ative|ext|ew|il|ot|ull)|o(bject|perator|r|ut|verride)|p(ackage|arams|rivate|rotected|rotocol|ublic)|r(aise|e(adonly|do|f|gister|peat|quire(_once)?|scue|strict|try|turn))|s(byte|ealed|elf|hort|igned|izeof|tatic|td|truct|ubscript|uper|ynchronized)|t(emplate|hen|his|hrows?|ransient|rue|ry|ype(alias|def|id|name|of))|u(n(checked|def(ined)?|ion|less|signed|til)|se|sing)|v(ar|irtual|oid|olatile)|w(char_t|hen|here|ith)|xor|yield)$/[test](token)
                         ]);
 
                         //if(keyword_type)
