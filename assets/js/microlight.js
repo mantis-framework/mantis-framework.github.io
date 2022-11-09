@@ -254,7 +254,7 @@ function is_whitespace(c) {
                             // opening brace or an
                             // operator (otherwise
                             // division, not a regex)
-                            (lastTokenType < 1) &&
+                            (lastTokenType < 2) &&
                             // workaround for xml
                             // closing tags
                             prev1 != '<',
