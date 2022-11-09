@@ -246,15 +246,15 @@ function is_whitespace(c) {
                     while (![
                         1,                   //  0: whitespace
                                              //  1: operator or braces
-                        /[\/{}[(\-+*=<>:;|\\.,?!&@~]/[test](chr),
-                        /[\])]/[test](chr),  //  2: closing brace
+                        /[\/{[(\-+*=<:;|\\.,?!&@~]/[test](chr),
+                        /[}\])>]/[test](chr),  //  2: closing brace
                         /[$\w]/[test](chr),  //  3: (key)word
                         chr == '/' &&        //  4: regex
                             // previous token was an
                             // opening brace or an
                             // operator (otherwise
                             // division, not a regex)
-                            (lastTokenType < 2) &&
+                            (lastTokenType < 1) &&
                             // workaround for xml
                             // closing tags
                             prev1 != '<',
@@ -279,7 +279,7 @@ function is_whitespace(c) {
                 if(is_tag_name && (is_whitespace(chr) || is_brace(chr)))
                     is_tag_name = false;
 
-                
+
 
                 if(prev1 == '{' || prev1 == '[' || prev1 == '(') {
                     ++brace_depth;
