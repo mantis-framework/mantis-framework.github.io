@@ -22,6 +22,8 @@
 		- hopefully more performnat but need to work out how to test/verify that (especially when normal text insertion for v1.0 does not require doing two bfs or dfs searches of the text nodes)
 		- doesn't have a caret lag when holding keys (including backspace)
 		- doesn't require as many hacks which may break unexpectedly in random places
+
+		- need to check if off-screen content for scrollable divs affects performance much, can it be removed from the div and improve performance updating as the user scrolls/edits? 
 */
 
 int main() {
