@@ -1,22 +1,41 @@
 /**
- * @fileoverview microlight - syntax highlightning library
- * @version 0.0.7
+ * @fileoverview mantis-highlight - syntax highlightning library
+ * @version 0.0.1
  *
- * @license MIT, see http://github.com/asvd/microlight
- * @copyright 2016 asvd <heliosframework@gmail.com>
+ * @license MIT, see http://github.com/mantis-framework
+ * @copyright 2022-present nicholas ham
  *
- * Code structure aims at minimizing the compressed library size
+ * Forked from microlight
  */
+
+function is_open_brace(c) {
+	return ( //excludes <
+		c == '{' ||
+		c == '[' ||
+		c == '(' 
+	);
+}
+
+function is_close_brace(c) {
+	return ( //excludes >
+		c == '}' ||
+		c == ']' ||
+		c == ')' 
+	);
+}
 
 function is_brace(c) {
     return (
-        c == '{' || 
-        c == '}' || 
-        c == '[' || 
-        c == ']' || 
-        c == '(' || 
-        c == ')'  
+        is_open_brace(c) ||
+        is_close_brace(c)  
     );
+}
+
+function is_inline_whitespace(c) {
+	return (
+		c == ' ' ||
+		c == '\t'
+	);
 }
 
 function is_whitespace(c) {
@@ -26,6 +45,64 @@ function is_whitespace(c) {
         c == '\n' ||
         c == '\r'
     );
+}
+
+function is_alphabetical(c) {
+	return (
+		('a' <= c && c <= 'z') ||
+		('A' <= c && c <= 'Z')
+	);
+}
+
+function is_numerical(c) {
+	return ('0' <= c && c <= '9');
+}
+
+function is_alphanumeric(c) {
+	return (
+		is_alphabetical(c) ||
+		is_numerical(c)
+	);
+}
+
+function is_c_var_name_char(c, is_start) {
+	return (
+		c == '_' || (
+			is_start 
+				? is_alphanumeric(c) 
+				: is_alphabetical(c)
+		)
+	);
+}
+
+function is_var_name_char(c, is_start) {
+	return (
+		is_c_var_name_char(c) ||
+		c == '-'
+	);
+}
+
+function is_selector_char(c) {
+	return (
+		is_whitespace(c)    ||
+		is_var_name_char(c) ||
+		c == ','  || //separator
+		c == '.'  || //class
+		c == '#'  || //id
+		c == '*'  || //wildcare
+		c == '['  || //attributes
+		c == ']'  || //attributes
+		c == '\'' || //strings
+		c == '"'  || //strings
+		c == '='  || 
+		c == ':'  || 
+		c == '>'  || 
+		c == '|'  || 
+		c == '^'  || 
+		c == '$'  || 
+		c == '+'  || 
+		c == '~'
+	);
 }
 
 (function (root, factory) {
@@ -53,6 +130,9 @@ function is_whitespace(c) {
         is_at_fn      = false,
         html_tag_open = false,
         is_html_tag   = false,
+        is_property   = false,
+        is_selector   = false,
+        is_dollar_var = false,
         is_tag_name   = false,
         brace_depth   = 0,
         valid_braces  = true,
@@ -76,6 +156,8 @@ function is_whitespace(c) {
             is_str = is_at_fn 
                    = html_tag_open 
                    = is_html_tag 
+                   = is_property
+                   = is_dollar_var
                    = is_tag_name 
                    = false;
             valid_braces = true;
@@ -130,13 +212,14 @@ function is_whitespace(c) {
                     (tokenType > 8 && chr == '\n') ||
                     [ // finalize conditions for other token types
                         // 0: whitespaces
+                        prev1 == '$' ||
                         /\S/[test](chr),  // merged together
                         // 1: operators
                         1,                // consist of a single character
                         // 2: braces
                         1,                // consist of a single character
                         // 3: (key)word
-                        !/[$\w]/[test](chr),
+                        !/[$\w]/[test](chr) || (/[\d]/[test](prev1) && !/[$\d]/[test](chr)),
                         // 4: regex
                         (prev1 == '/' || prev1 == '\n') && multichar,
                         // 5: string with "
@@ -163,8 +246,14 @@ function is_whitespace(c) {
                             		: 'color:var(--bg-content);background:var(--sorbet-red);padding:1px 0px 2px 0px;-webkit-box-decoration-break:clone;box-decoration-break:clone;'
                             : is_html_tag 
                                 ? "color: var(--rnbw-color-11)"
-                            : is_at_fn 
+                            : is_dollar_var || prev1 == '$' 
+                                ? "color:var(--neon-orange)" 
+                            : is_at_fn || prev1 == '@' || chr == '@'
                                 ? "color:var(--neon-pink)" 
+                            : chr == '('
+                            	? "color:var(--sorbet-orange)"
+                            : chr == '['
+                            	? "color:var(--sorbet-green)"
                             //inferred types
                             : /^(auto|let|var)$/[test](token)
                             	? "color:var(--sorbet-cyan)"
@@ -177,13 +266,21 @@ function is_whitespace(c) {
                             //key fns
                            	: /^(main)$/[test](token)
                             	? "color:var(--sorbet-orange)"
+                            //(s)css selectors
+                            : is_selector || chr == '{' || next1 == '{' || text[pos+1] == '{'
+                            	? "color:var(--rnbw-color-" + colors[(brace_depth+2)%colors.length] + ")"
+                            	//? "color:var(--sorbet-green)"
+                            //(s)css properties
+                            : chr == ':' || next1 == ':' || text[pos+1] == ':' || is_property
+                            	? "color:var(--rnbw-color-" + colors[(brace_depth+4)%colors.length] + ")"
+                            	//? "color:var(--sorbet-green)"
                            	//
-                            : 'color:white',
+                            : 'color:#c2a344',
                             // 1: keywords
                             'color:var(--sorbet-violet);',
                             // 2: punctuation
                             brace_depth < 0 || !valid_braces ? 'color:var(--bg-content);background:var(--sorbet-red);padding:1px 0px 2px 0px;-webkit-box-decoration-break:clone;box-decoration-break:clone;' :
-                            prev1 == '@' ? "color:var(--neon-pink)" :
+                            /*prev1 == '@' ? "color:var(--neon-pink)" :*/
                             'color:' + (
                                 is_brace(prev1) || 
                                 (prev1 == '<' && is_html_tag) || 
@@ -215,7 +312,7 @@ function is_whitespace(c) {
 
                             // otherwise tokenType == 3, (key)word
                             // (1 if regexp matches, 0 otherwise)
-                            + /^(a(bstract|lias|nd|rguments|rray|s(m|sert)?)|b(ase|egin|reak|yte)|c(ase|atch|hecked|lass|lone|ompl|onst|ontinue|out)|de(bugger|cimal|clare|f(ault)?|init|l(egate|ete)?)|e(cho|nd(l)?|nsure|vent|x(cept|ec|p(licit|ort)|te(nds|nsion|rn)))|f(allthrough|alse|inal(ly)?|ixed|loat|riend|rom|unc(tion)?)|global|goto|guard|i(mp(lements|licit|ort)|n(sert|clude(_once)?|line|out|stanceof|t(erface|ernal))?|s)|l(ambda|ock|ong)|m(icrolight|odule|utable)|NaN|n(amespace|ative|ext|ew|il|ot|ull)|o(bject|perator|r|ut|verride)|p(ackage|arams|rivate|rotected|rotocol|ublic)|r(aise|e(adonly|do|f|gister|peat|quire(_once)?|scue|strict|try|turn))|s(byte|ealed|elf|hort|igned|izeof|tatic|td|truct|ubscript|uper|ynchronized)|t(emplate|hen|his|hrows?|ransient|rue|ry|ype(alias|def|id|name|of))|u(n(checked|def(ined)?|ion|less|signed|til)|se|sing)|v(ar|irtual|oid|olatile)|w(char_t|hen|here|ith)|xor|yield)$/[test](token)
+                            + /^(a(bstract|lias|nd|rguments|rray|s(m|sert)?)|b(ase|egin|reak|yte)|c(ase|atch|hecked|lass|lone|ompl|onst|ontinue|out)|de(bugger|cimal|clare|f(ault)?|init|l(egate|ete)?)|e(cho|nd(l)?|nsure|vent|x(cept|ec|p(licit|ort)|te(nds|nsion|rn)))|f(allthrough|alse|inal(ly)?|ixed|loat|riend|rom|unc(tion)?)|global|goto|guard|i(mp(lements|licit|ort)|n(sert|clude(_once)?|out|stanceof|t(erface|ernal))?|s)|l(ambda|ock|ong)|m(icrolight|odule|utable)|NaN|n(amespace|ative|ext|ew|il|ot|ull)|o(bject|perator|r|ut|verride)|p(ackage|arams|rivate|rotected|rotocol|ublic)|r(aise|e(adonly|do|f|gister|peat|quire(_once)?|scue|strict|try|turn))|s(byte|ealed|elf|hort|igned|izeof|tatic|td|truct|ubscript|uper|ynchronized)|t(emplate|hen|his|hrows?|ransient|rue|ry|ype(alias|def|id|name|of))|u(n(checked|def(ined)?|ion|less|signed|til)|se|sing)|v(ar|irtual|oid|olatile)|w(char_t|hen|here|ith)|xor|yield)$/[test](token)
                         ]);
 
                         //if(keyword_type)
@@ -237,6 +334,8 @@ function is_whitespace(c) {
                     // initializing a new token
                     token = '';
                     keyword_type = 0;
+                    is_property  = false;
+                    is_selector  = false;
                     valid_braces = true;
 
                     // determining the new token type (going up the
@@ -247,9 +346,9 @@ function is_whitespace(c) {
                     while (![
                         1,                   //  0: whitespace
                                              //  1: operator or braces
-                        /[\/{[(\-+*=<:;|\\.,?!&@~]/[test](chr),
+                        /[\/{[(%\-+*=<:;|\\.,?!&@~]/[test](chr),
                         /[}\])>]/[test](chr),  //  2: closing brace
-                        /[$\w]/[test](chr),  //  3: (key)word
+                        /[\w]/[test](chr) || /[@\w]/[test](chr),  //  3: (key)word
                         chr == '/' &&        //  4: regex
                             // previous token was an
                             // opening brace or an
@@ -277,10 +376,49 @@ function is_whitespace(c) {
                 else if(is_at_fn && (is_whitespace(chr) || is_brace(chr)))
                     is_at_fn = false;
 
+                if(prev1 == '$' && !is_whitespace(chr) && !is_brace(chr) && !('0' <= chr && chr <= '9'))
+                    is_dollar_var = true;
+                else if(is_dollar_var && (is_whitespace(chr) || is_brace(chr)))
+                    is_dollar_var = false;
+
                 if(is_tag_name && (is_whitespace(chr) || is_brace(chr)))
                     is_tag_name = false;
 
+                if(
+                	next1 == ',' || 
+                	next1 == ':' || 
+                	next1 == '-' || 
+                	next1 == '>' ||
+                	next1 == '~' ||
+                	next1 == '+' ||
+                	is_whitespace(next1)
+                ) {
+                	for(let p=pos+1; p<text.length; ++p) {
+                		if(text[p] == '{') {
+                			is_selector = true;
+                			break;
+                		}
+                		else if(!is_selector_char(text[p])) {
+                			break;
+                		}
+                	}
+                }
 
+                if(next1 == "-") {
+                	for(let p=pos+1; p<text.length; ++p) {
+                		if(text[p] == ':') {
+                			is_property = true;
+                			break;
+                		}
+                		else if(
+                			!('a' <= text[p] && text[p] <= 'z') &&
+                        	!('A' <= text[p] && text[p] <= 'Z') &&
+                        	!is_whitespace(text[p]) &&
+                        	text[p] != '-'
+                		)
+                			break;
+                	}
+                }
 
                 if(prev1 == '{' || prev1 == '[' || prev1 == '(') {
                     ++brace_depth;

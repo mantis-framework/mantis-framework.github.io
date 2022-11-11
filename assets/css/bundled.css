@@ -361,7 +361,10 @@ body
 h1::selection {
 	background-color: transparent;
 	color: inherit;
-	cursor: pointer;
+}
+
+h1:hover {
+	cursor: default;
 }
 
 h1, h2, h3, h4, h5, h6
@@ -412,7 +415,7 @@ ul li {
 
 /* width */
 ::-webkit-scrollbar {
-	width: 10px;
+	width: 8px;
 	height: 0px; /*5px;*/
 }
 
@@ -513,7 +516,7 @@ pre::-webkit-scrollbar-thumb {
   content: url("../icons/inverted/xmark-solid.png"); 
 }
 :root {
-  --bg-menu: #1f2223;
+  --bg-menu: #0d0d0d;
 }
 
 .menu-bars, .menu-cross {
@@ -696,6 +699,39 @@ pre{
                       var(--gradient-border);
 	background-origin: border-box;
 	background-clip: padding-box, border-box; /*content-box, border-box;*/
+}
+
+#mantis-editor {
+	background: transparent;
+	caret-color: var(--rnbw-color-6);
+
+	text-align:left;
+	tab-size: 4;
+
+	max-width: 90%;
+
+	margin: 0 auto 15px;
+	padding: 15px;
+
+	font-family: oxygen;
+	font-size: 90%;
+
+	white-space:      pre;  /* css-3 */
+	white-space: -moz-pre;  /* ff */
+	white-space:     -pre;  /* opera 4-6 */
+	white-space:   -o-pre;  /* opera 7 */
+	word-wrap:     normal;  /* ie 5.5+ */
+
+	border: solid 1px transparent;
+	border-radius: 4px;
+	background-image: var(--gradient-code-bg), 
+                      var(--gradient-border);
+	background-origin: border-box;
+	background-clip: padding-box, border-box; /*content-box, border-box;*/
+}
+
+#mantis-editor:focus {
+	outline: none;
 }
 
 #editor-container {
