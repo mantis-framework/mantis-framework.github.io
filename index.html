@@ -93,7 +93,7 @@
 		- gets and sets the caret properly each key stroke
 		- less features implemented (plus less features come 'out of the box'), though should be trivial to add in user-resizing and max-height with scrolling
 		- hopefully more performant but need to work out how to test/verify that (especially when normal text insertion for v1.0 does not use two bfs or dfs searches of the text nodes, though should be able to avoid this when editing the same line (just need to store previous search results))
-		- do we need to do full dfs or bfs searches of the text nodes? ie. can an element of a text line have children? In which case does it matter if we do bfs or dfs search? bfs would allow popping nodes from the stack as we search. note: iirc building page with single line editor content seemed to have the text nodes for that line as the children of the editor div, whereas for multiple lines the children of the editor div seemed to be the line nodes (each of which made up of text nodes)
+		- do we need to do full dfs or bfs searches of the text nodes? ie. can an element of a text line have children? In which case does it matter if we do bfs or dfs search? dfs* would allow popping nodes from the stack as we search. note: iirc building page with single line editor content seemed to have the text nodes for that line as the children of the editor div, whereas for multiple lines the children of the editor div seemed to be the line nodes (each of which made up of text nodes)
 		- doesn't have a caret lag when holding keys (including backspace)
 		- doesn't require as many hacks which may break unexpectedly in random places
 
