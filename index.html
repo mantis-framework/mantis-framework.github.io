@@ -79,26 +79,25 @@
 <h6>mantis</h6>
 
 <p>
-	sd f sdf sdf s dfsd f sdf sd fsd fsd f df df sdf df sf sf sd ad g  g gw e f sdf sdf sd fs d fsd fsd f df df sdf df sf sf sd ad g  g gw e f sdf sdf sd fs gs d f sdf sdf sf sd fs df sd fs df sdf sd f sdf sdf s dfsd f sdf sd fsd fsd f df df sdf df sf sf sd ad g  g gw e f sdf sdf df sd fs d fsd fsd f df df sdf df sf sf sd ad g  g gw e f sdf sdf sd fs gs d f sdf sdf sf sd fs df sd fs df sdf sd f sdf sdf s dfsd f sdf sd fsd fsd f df df sdf df sf sf sd ad g  g gw e f sdf s
-</p>
+	playground for mantis website - homepage currently messy tinkering with playground for <mono>mantis-highlight</mono> and <mono>mantis-editor</mono>..
+</p><br><br>
 
+<h3>highlighter/editor usecases (non-exclusive)</h3>
+<ul align="left">
+	<li>stylable syntax highlighting with rainbow brackets/selectors/properties/etc.</li>
+	<li>website animations with text</li>
+	<li>web editors/ides/clis/terminals/etc.</li>
+	<li>chat bots</li>
+</ul>
+
+<h2>mantis-editor</h2><br>
 <div contenteditable 
 	align="center"
 	class="microlight pre-wrap"
 	id="mantis-editor"
 	spellcheck="false"
-	onkeydown="key_press(event)" 
->/*
-	mantis editor v2.0 
-		- gets and sets the caret properly each key stroke
-		- less features implemented (plus less features come 'out of the box'), though should be trivial to add in user-resizing and max-height with scrolling
-		- hopefully more performant but need to work out how to test/verify that (especially when normal text insertion for v1.0 does not use two bfs or dfs searches of the text nodes, though should be able to avoid this when editing the same line (just need to store previous search results))
-		- do we need to do full dfs or bfs searches of the text nodes? ie. can an element of a text line have children? In which case does it matter if we do bfs or dfs search? dfs* would allow popping nodes from the stack as we search. note: iirc building page with single line editor content seemed to have the text nodes for that line as the children of the editor div, whereas for multiple lines the children of the editor div seemed to be the line nodes (each of which made up of text nodes)
-		- doesn't have a caret lag when holding keys (including backspace)
-		- doesn't require as many hacks which may break unexpectedly in random places
-
-		- need to check if off-screen content for scrollable divs affects performance much, can it be removed from the div and improve performance updating as the user scrolls/edits? What about when combined with making sure syntax highlighting isn't affected? Should at least be able to do after viewable content, though in that case could be better to highlight and store everything in reverse as more likely to be towards the end of documents being edited.. Alternatively can store state of highliter (eg. brace depth, brace stack etc.) x lines prior to viewable content and reload div content as user scrolls (lazy loading kind of approach)
-*/
+	onkeydown="key_press(event)"
+>//edit me v2.0
 
 int main() {
 	std::cout << "hello, world!" << std::endl;
@@ -110,26 +109,58 @@ int main() {
 
 <div id="editor-container" align="center">
 <div id="editor-content" class="microlight pre-wrap" contenteditable spellcheck="false"></div>
-<div id="editor" class="pre-wrap" contenteditable spellcheck="false" onkeyup="redraw_editor()" onkeydown="redraw_editor()">/*
-	mantis editor v1.0
-		- has overlapping divs (editable div has transparent font color)
-		- caret lags 1 position when holding keys
-		- need to implement caret getting/setting anyway for stuff like tab insertion, commands, terminal-like carets etc..
-		- works out of the box for stuff like arrow keys, backspace, enter, selecting/copying text etc..
-		- seems to be difficult to make user-resizable or have max-height with scrolling, attempts to have event listeners on resize of editable transparent-font div to also resize highlighted div resulted in very jumpy behaviour in browser (too chaotic to check within any reasonable tolerances)
-*/
+<div id="editor" class="pre-wrap" contenteditable spellcheck="false" onkeyup="redraw_editor()" onkeydown="redraw_editor()">
+//edit me v1.0
 
 int main() {
 	std::cout << "hello, world!" << std::endl;
 
 	return 0;
 }
+</div></div>
 
-</div>
-</div>
+<pre class="microlight wrap">
+/*
+	mantis editor v2.0 notes:
+	-------------------------
 
-<pre class="microlight">
-/* scss */
+	- gets and sets the caret properly each content modifying key stroke 
+	- turns out you can just let the normal event run for non content modifying key strokes because it doesn't require the content being modified or redoing syntax highlighting, both of which reset the caret position (eg. arrow keys)
+	- need to implement calling reset on single element rather than rehighlighting entire page
+	- if I could figure out how to rehighlight and reset the caret position after letting only the events we want to run (ie. not be prevented) then could potentially avoid having to do two bfs searches of the text nodes (haven't been able to avoid searching:
+		1. before modifying and rehighlighting as need to get the full current position of caret, which could have changed even from using the mouse and hard to keep a global pos variable when events are firing frequently, otherwise could potentially keep track of caret position from keystrokes and do bfs/dfs search to update caret position onclick)
+		2. after modifying and rehighlighting (haven't been able to keep track of the focusNode from before modification/rehighlighting and after, quite likely from the text nodes being recreated though that's under the hood for js and not sure where to really check what it's doing or if it'd even be browser independent, likely js implementation independent?)
+	- haven't implemented ctrl+* but should be able to along with custom hard-coded and custom user-defined commands (along with alt/cmd/etc.), have blocked ctrl from adding to text without blocking usual ctrl event but eg ctrl+c will still insert 'c' (however can select with both shift arrows or using mouse and then right click to copy/paste, caveat however is that it doesn't actually redo the syntax highlighting, but does replicate the syntax highlighting if copied from any syntax highlighted element)
+	- [!!] undo/redo doesn't work with ctrl+z/ctrl+shift+z nor is it available with right click (presumably because for modifying keystrokes I'm still searching for the focus node to get the full pos of the caret, inserting changes manually, rehighlighting then resetting the caret). Even if the majority of modifying keystrokes could be implemented manually tab in particular seems to require manually inserting '\t' and arguably rehighlighting (could be breaking up text which was highlighted and/or one/both halves are highlighted), manually implementing undo/redo might be a real pita
+	- should be trivial to add in user-resizing and max-height with scrolling
+	- hopefully more performant but need to work out how to test/verify that (especially when content modifying keystrokes for v1.0 does not use two bfs searches of the text nodes, though should be able to avoid this when editing the same line (just need to store previous search results))
+	- do we need to do full bfs (or dfs?) searches of the text nodes? ie. can an element of a text line have children? In which case does it matter if we do bfs or dfs search? dfs* would allow popping nodes from the stack as we search but bfs 'seems' right (haven't even tried to test if I can add child nodes to text nodes for a given line). note: iirc building page with single line editor content seemed to have the text nodes for that line as the children of the editor div, whereas for multiple lines the children of the editor div seemed to be the line nodes (each of which made up of text nodes)
+	- doesn't have a caret lag when holding keys (including backspace)
+	- doesn't require as many css hacks which may break unexpectedly in random places (eg. transparent text/caret getting out of sync with displayed text which can happen for all sorts of nuanced reasons and be a pita to debug)
+
+	- need to check if off-screen content for scrollable divs affects performance much, can it be removed from the div and improve performance updating as the user scrolls/edits? What about when combined with making sure syntax highlighting isn't affected? Should at least be able to do after viewable content, though in that case could be better to highlight and store everything in reverse as more likely to be towards the end of documents being edited.. Alternatively can store state of highliter (eg. brace depth, brace stack etc.) x lines prior to viewable content and reload div content as user scrolls (lazy loading kind of approach)
+*/
+</pre>
+
+<pre class="microlight wrap">
+/*
+	mantis editor v1.0 notes:
+	-------------------------
+
+	- has overlapping divs (editable div has transparent font color)
+	- caret lags 1 position when holding keys
+	- need to implement caret getting/setting anyway for stuff like tab insertion, commands, terminal-like carets etc..
+	- works out of the box for stuff like arrow keys, backspace, enter, selecting/copying text, undo/redo (still haven't figured out undo/redo for v2.0) etc..
+	- seems to be difficult to make user-resizable or have max-height with scrolling, attempts to have event listeners on resize of editable transparent-font div to also resize highlighted div resulted in very jumpy behaviour in browser (too chaotic to check within any reasonable tolerances)
+*/
+</pre><br><br>
+
+<h2>mantis-highlight</h2><br>
+<pre class="microlight wrap">
+/* 
+	scss example:
+*/
+
 $font-stack: Helvetica, sans-serif;
 $primary-color: #333;
 
@@ -189,6 +220,62 @@ aside[role="complementary"] {
 }
 </pre>
 
+<pre class="microlight wrap">
+/* 
+	scss example notes:
+	-------------------
+
+	- brackets are rainbow colored depending on nested depth, provides visually digestible information about whether brackets syntactically correct, eg. have matching close brackets of the right type in the right place, and makes it easy to find matching open/close brackets when reading code
+	- selectors/properties are also rainbow colored depending on depth of nesting within brackets, helpful for similar reasons to rainbow brackets, eg. for identifying which nest level a selector/property is at
+	- bracket/selector/property/number colours have animating hues presently 
+	- need to implement calling reset on single element rather than rehighlighting entire page, eg. for editor and using client side js to modify/set/load/etc. a mantis-highlight element 
+*/
+</pre><br>
+
+<pre class="microlight">
+&lt;!-- example nift/mantis html.template file -->
+
+&lt;!doctype html>
+&lt;html lang="en">
+	&lt;head>
+		@input("templates/head.template")
+	&lt;/head>
+
+	&lt;body>
+		&lt;div align="center">
+			@input("templates/menu.template")
+
+			&lt;div id="content">
+				@content
+
+				@//input("templates/footer.template")
+			&lt;/div>
+		&lt;/div>
+
+		&lt;script defer
+			type = "text/javascript" 
+			src  = "@pathto(output/assets/js/bundled.js)"
+		>&lt;/script>
+	&lt;/body>
+&lt;/html>
+</pre><br>
+
+<pre class="microlight wrap">
+/*
+	current status of highlighting original microlight
+*/
+
+!function(e,t){"function"==typeof define&&define.amd?define(["exports"],t):t("undefined"!=typeof exports?exports:e.microlight={})}(this,function(e){var t,i=window,n=document,o="appendChild",r="test",a=";text-shadow:",l="opacity:.",s=" 0px 0px ",c="3px 0px 5",d=")",u=n.getElementsByClassName("microlight"),f=function(e){for(e=0;t=u[e++];)for(var f,p,h,g,m,y=t.textContent,x=0,b=y[0],w=1,v=t.innerHTML="",k=0,C=/(\d*\, \d*\, \d*)(, ([.\d]*))?/g.exec(i.getComputedStyle(t).color),N="px rgba("+C[1]+",",E=C[3]||1;p=f,f=7>k&&"\\"==f?1:w;){if(w=b,b=y[++x],g=v.length>1,!w||k>8&&"\n"==w||[/\S/[r](w),1,1,!/[$\w]/[r](w),("/"==f||"\n"==f)&&g,'"'==f&&g,"'"==f&&g,y[x-4]+p+f=="-->",p+f=="*/"][k])for(v&&(t[o](m=n.createElement("span")).setAttribute("style",["",a+s+9+N+.7*E+"),"+s+2+N+.4*E+d,l+6+a+s+7+N+E/4+"),"+s+3+N+E/4+d,l+7+a+c+N+E/5+"),-"+c+N+E/5+d,"font-style:italic;"+l+5+a+c+N+E/4+"),-"+c+N+E/4+d][k?3>k?2:k>6?4:k>3?3:+/^(a(bstract|lias|nd|rguments|rray|s(m|sert)?|uto)|b(ase|egin|ool(ean)?|reak|yte)|c(ase|atch|har|hecked|lass|lone|ompl|onst|ontinue)|de(bugger|cimal|clare|f(ault|er)?|init|l(egate|ete)?)|do|double|e(cho|ls?if|lse(if)?|nd|nsure|num|vent|x(cept|ec|p(licit|ort)|te(nds|nsion|rn)))|f(allthrough|alse|inal(ly)?|ixed|loat|or(each)?|riend|rom|unc(tion)?)|global|goto|guard|i(f|mp(lements|licit|ort)|n(it|clude(_once)?|line|out|stanceof|t(erface|ernal)?)?|s)|l(ambda|et|ock|ong)|m(icrolight|odule|utable)|NaN|n(amespace|ative|ext|ew|il|ot|ull)|o(bject|perator|r|ut|verride)|p(ackage|arams|rivate|rotected|rotocol|ublic)|r(aise|e(adonly|do|f|gister|peat|quire(_once)?|scue|strict|try|turn))|s(byte|ealed|elf|hort|igned|izeof|tatic|tring|truct|ubscript|uper|ynchronized|witch)|t(emplate|hen|his|hrows?|ransient|rue|ry|ype(alias|def|id|name|of))|u(n(checked|def(ined)?|ion|less|signed|til)|se|sing)|v(ar|irtual|oid|olatile)|w(char_t|hen|here|hile|ith)|xor|yield)$/[r](v):0]),m[o](n.createTextNode(v))),h=k&&7>k?k:h,v="",k=11;![1,/[\/{}[(\-+*=&lt;>:;|\\.,?!&@~]/[r](w),/[\])]/[r](w),/[$\w]/[r](w),"/"==w&&2>h&&"&lt;"!=f,'"'==w,"'"==w,w+b+y[x+1]+y[x+2]=="&lt;!--",w+b=="/*",w+b=="//","#"==w][--k];);v+=w}};e.reset=f,"complete"==n.readyState?f():i.addEventListener("load",f,0)});
+</pre>
+
+<pre class="microlight wrap">
+/*
+	micrlight highlighted example notes:
+	-------------------
+
+	will figure out how to fix bracket issues, and ensure it's able to highlight final minified version of mantis-highlight and mantis-editor once finished, cleaned up and minified etc.., need to fix up issues with minifier too
+*/
+</pre><br>
 
 <pre class="microlight">
 using namespace std;
@@ -213,32 +300,6 @@ p::+ { color: red }
 
 "this is a string"
 'c'
-</pre>
-
-<pre class="microlight linenums">
-&lt;!doctype html>
-&lt;html lang="en">
-	&lt;head>
-		@input("templates/head.template")
-	&lt;/head>
-
-	&lt;body>
-		&lt;div align="center">
-			@input("templates/menu.template")
-
-			&lt;div id="content">
-				@content
-
-				@//input("templates/footer.template")
-			&lt;/div>
-		&lt;/div>
-
-		&lt;script defer
-			type = "text/javascript" 
-			src  = "@pathto(output/assets/js/bundled.js)"
-		>&lt;/script>
-	&lt;/body>
-&lt;/html>
 </pre>
 
 				

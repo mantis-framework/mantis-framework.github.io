@@ -9,100 +9,65 @@
  */
 
 function is_open_brace(c) {
-	return ( //excludes <
-		c == '{' ||
-		c == '[' ||
-		c == '(' 
-	);
+	return /^({|\[|\()/['test'](c);
 }
 
 function is_close_brace(c) {
-	return ( //excludes >
-		c == '}' ||
-		c == ']' ||
-		c == ')' 
-	);
+	return /^(}|]|\))/['test'](c);
 }
 
 function is_brace(c) {
-    return (
-        is_open_brace(c) ||
-        is_close_brace(c)  
-    );
+	return /^({|}|\[|]|\(|\))/['test'](c);
+    //return (is_open_brace(c) || is_close_brace(c));
+    //return(a(c)||b(c));
+    //check to see when each possibility will be smaller minified
 }
 
 function is_inline_whitespace(c) {
-	return (
-		c == ' ' ||
-		c == '\t'
-	);
+	return /^(' '|\t)/['test'](c);
 }
 
 function is_whitespace(c) {
-    return (
-        c == ' '  ||
-        c == '\t' ||
-        c == '\n' ||
-        c == '\r'
-    );
+	return /^(\s)/['test'](c);
 }
 
 function is_alphabetical(c) {
-	return (
-		('a' <= c && c <= 'z') ||
-		('A' <= c && c <= 'Z')
-	);
+	return /^(\w)/['test'](c);
 }
 
 function is_numerical(c) {
-	return ('0' <= c && c <= '9');
+	return /^(\d)/['test'](c);
 }
 
 function is_alphanumeric(c) {
-	return (
-		is_alphabetical(c) ||
-		is_numerical(c)
-	);
+	return /^(\d|\w)/['test'](c);
 }
 
 function is_c_var_name_char(c, is_start) {
-	return (
+	return is_start 
+		? /^(\d|\w|_)/['test'](c) 
+		: /^(\w|_)/['test'](c);
+	/*return (
 		c == '_' || (
 			is_start 
 				? is_alphanumeric(c) 
 				: is_alphabetical(c)
 		)
-	);
+	);*/
 }
 
 function is_var_name_char(c, is_start) {
-	return (
-		is_c_var_name_char(c) ||
+	return is_start 
+		? /^(\d|\w|_|-)/['test'](c) 
+		: /^(\w|_|-)/['test'](c);
+	/*return (
+		is_c_var_name_char(c, is_start) ||
 		c == '-'
-	);
+	);*/
 }
 
 function is_selector_char(c) {
-	return (
-		is_whitespace(c)    ||
-		is_var_name_char(c) ||
-		c == ','  || //separator
-		c == '.'  || //class
-		c == '#'  || //id
-		c == '*'  || //wildcare
-		c == '['  || //attributes
-		c == ']'  || //attributes
-		c == '\'' || //strings
-		c == '"'  || //strings
-		c == '='  || 
-		c == ':'  || 
-		c == '>'  || 
-		c == '|'  || 
-		c == '^'  || 
-		c == '$'  || 
-		c == '+'  || 
-		c == '~'
-	);
+	return /^(\d|\s|\w|_|-|,|\.|#|\*|\[|]|\\|'|"|=|:|>|\||^|\$|\+|~)/['test'](c);
 }
 
 (function (root, factory) {
@@ -141,15 +106,12 @@ function is_selector_char(c) {
         colors = [0, 3, 6, 9, 1, 4, 7, 10, 2, 5, 8],
 
         i,
-        microlighted,
         el,  // current microlighted element to run through
         cl;  // class list
-
-
     
-    var reset = function(cls) {
+    var reset = function(microlighted) {
         // nodes to highlight
-        microlighted = _document.getElementsByClassName(cls||'microlight');
+        //microlighted = _document.getElementsByClassName(cls||'microlight');
 
         for (i = 0; el = microlighted[i++];) {
             cl = el.classList;
@@ -317,7 +279,6 @@ function is_selector_char(c) {
 
                         //if(keyword_type)
                         //	alert(keyword_type);
-                        //	alert(/^(fuckyeah)$/[test](token));
 
                         //if(tokenType == 3)
                           //alert(token + " " + tokenType);
@@ -334,8 +295,6 @@ function is_selector_char(c) {
                     // initializing a new token
                     token = '';
                     keyword_type = 0;
-                    is_property  = false;
-                    is_selector  = false;
                     valid_braces = true;
 
                     // determining the new token type (going up the
@@ -372,30 +331,24 @@ function is_selector_char(c) {
                 	is_str = !is_str;
 
                 if(prev1 == '@' && !is_whitespace(chr) && !is_brace(chr))
-                    is_at_fn = true;
+                    is_at_fn = 1;
                 else if(is_at_fn && (is_whitespace(chr) || is_brace(chr)))
-                    is_at_fn = false;
+                    is_at_fn = 0;
 
                 if(prev1 == '$' && !is_whitespace(chr) && !is_brace(chr) && !('0' <= chr && chr <= '9'))
-                    is_dollar_var = true;
+                    is_dollar_var = 1;
                 else if(is_dollar_var && (is_whitespace(chr) || is_brace(chr)))
-                    is_dollar_var = false;
+                    is_dollar_var = 0;
 
                 if(is_tag_name && (is_whitespace(chr) || is_brace(chr)))
-                    is_tag_name = false;
+                    is_tag_name = 0;
 
-                if(
-                	next1 == ',' || 
-                	next1 == ':' || 
-                	next1 == '-' || 
-                	next1 == '>' ||
-                	next1 == '~' ||
-                	next1 == '+' ||
-                	is_whitespace(next1)
-                ) {
+                if(is_selector && next1 == '{')
+                	is_selector = 0;
+                else if(!is_selector && /^(\s|,|\.|:|-|>|~|\+)/['test'](next1)) {
                 	for(let p=pos+1; p<text.length; ++p) {
                 		if(text[p] == '{') {
-                			is_selector = true;
+                			is_selector = 1;
                 			break;
                 		}
                 		else if(!is_selector_char(text[p])) {
@@ -404,12 +357,15 @@ function is_selector_char(c) {
                 	}
                 }
 
-                if(next1 == "-") {
+                if(is_property && next1 == ':')
+                	is_property = 0;
+                else if(!is_property && next1 == "-") {
                 	for(let p=pos+1; p<text.length; ++p) {
                 		if(text[p] == ':') {
-                			is_property = true;
+                			is_property = 1;
                 			break;
                 		}
+                		//else if(/^(\S|\W|-)/[test](text[p])) //test this
                 		else if(
                 			!('a' <= text[p] && text[p] <= 'z') &&
                         	!('A' <= text[p] && text[p] <= 'Z') &&
@@ -420,12 +376,12 @@ function is_selector_char(c) {
                 	}
                 }
 
-                if(prev1 == '{' || prev1 == '[' || prev1 == '(') {
+                if(is_open_brace(prev1)) {
                     ++brace_depth;
                     braces.push(prev1);
                 }
 
-                if(chr == '}' || chr == ']' || chr == ')') {
+                if(is_close_brace(chr)) {
                 	--brace_depth;
                     valid_braces = (
                     	(chr == '}' && braces[brace_depth] == '{') ||
@@ -436,8 +392,8 @@ function is_selector_char(c) {
                 }
 
                 if(is_html_tag && prev1 == '>') {
-                    is_html_tag = false;
-                    is_tag_name = false;
+                    is_html_tag = 0;
+                    is_tag_name = 0;
                     if(html_tag_open) {
                         ++brace_depth;
                         braces.push('<');
@@ -447,31 +403,24 @@ function is_selector_char(c) {
 
                 if(chr == '<') {
                     if(next1 == '/'){
-                        is_html_tag = true;
-                        is_tag_name = true;
-                        html_tag_open = false; 
+                        is_html_tag = 1;
+                        is_tag_name = 1;
+                        html_tag_open = 0; 
                         --brace_depth;
                         valid_braces = (braces[brace_depth] == '<');
 	                    braces.pop();
                     }
-                    else if(
-                        next1 == '!' ||
-                        ('a' <= next1 && next1 <= 'z') ||
-                        ('A' <= next1 && next1 <= 'Z') 
-                    ) {
+                    else if(/^(\w|!)/[test](next1)) {
                         let depth = 0;
 
                         for(let x=pos+1; x<text.length; ++x) {
                             if(!depth && text[x] == '>') {
-                                is_html_tag = true;
-                                html_tag_open = true;
-                                is_tag_name = true;
+                                is_html_tag = 1;
+                                html_tag_open = 1;
+                                is_tag_name = 1;
                                 break;
                             }
-                            else if(
-                                text[x] == '"' || 
-                                text[x] == '\''
-                            ) {
+                            else if(/^("|')/[test](text[x])) {
                                 let end_quote = text[x];
                                 while(
                                     ++x < text.length && 
@@ -480,24 +429,11 @@ function is_selector_char(c) {
                                     if(text[x] == '\\')
                                         ++x;
                             }
-                            else if(!depth && (
-                                text[x] == ';' || 
-                                text[x] == '}' ||
-                                text[x] == ']'
-                            )) {
-                                break; 
-                            }
-                            else if(
-                                text[x] == '{' ||
-                                text[x] == '<' ||
-                                text[x] == '['
-                            )
+                            else if(/^(;|}|])/[test](text[x]))
+                                break;
+                            else if(/^({|<|\[)/[test](text[x]))
                                 ++depth;
-                            else if(
-                                text[x] == '}' ||
-                                text[x] == '>' ||
-                                text[x] == ']'
-                            )
+                            else if(/^(}|>|])/[test](text[x]))
                                 --depth;
                         }
                     }
@@ -508,11 +444,16 @@ function is_selector_char(c) {
         }
     }
 
+    var reset_id = function(id) {
+    	reset([_document.getElementById(id)]);
+    }
+
     exports.reset = reset;
+    exports.reset_id = reset_id;
 
     if (_document.readyState == 'complete') {
-        reset();
+        reset(_document.getElementsByClassName("microlight"));
     } else {
-        _window.addEventListener('load', function(){reset()}, 0);
+        _window.addEventListener('load', function(){reset(_document.getElementsByClassName("microlight"))}, 0);
     }
 }));
