@@ -9,10 +9,105 @@
 	sd f sdf sdf s dfsd f sdf sd fsd fsd f df df sdf df sf sf sd ad g  g gw e f sdf sdf sd fs d fsd fsd f df df sdf df sf sf sd ad g  g gw e f sdf sdf sd fs gs d f sdf sdf sf sd fs df sd fs df sdf sd f sdf sdf s dfsd f sdf sd fsd fsd f df df sdf df sf sf sd ad g  g gw e f sdf sdf df sd fs d fsd fsd f df df sdf df sf sf sd ad g  g gw e f sdf sdf sd fs gs d f sdf sdf sf sd fs df sd fs df sdf sd f sdf sdf s dfsd f sdf sd fsd fsd f df df sdf df sf sf sd ad g  g gw e f sdf s
 </p>
 
+<div contenteditable 
+	align="center"
+	class="microlight pre-wrap"
+	id="mantis-editor"
+	spellcheck="false"
+	onkeydown="key_press(event)" 
+>/*
+	mantis editor v2.0 
+		- gets and sets the caret properly each key stroke
+		- less features implemented (plus comes out of the box)
+		- hopefully more performnat but need to work out how to test that
+		- doesn't have a caret lag when holding keys (including backspace)
+		- doesn't require as many hacks which may break unexpectedly in random places
+*/
+
+int main() {
+	std::cout << "hello, world!" << std::endl;
+
+	return 0;
+}
+
+</div>
+
 <div id="editor-container" align="center">
 <div id="editor-content" class="microlight pre-wrap" contenteditable spellcheck="false"></div>
-<div id="editor" class="pre-wrap" contenteditable spellcheck="false" onkeyup="redraw_editor()" onkeydown="redraw_editor()">//edit me</div>
+<div id="editor" class="pre-wrap" contenteditable spellcheck="false" onkeyup="redraw_editor()" onkeydown="redraw_editor()">/*
+	mantis editor v1.0
+		- has overlapping divs (editable div has transparent font color)
+		- caret lags 1 position when holding keys
+		- need to implement caret getting/setting anyway for stuff like tab insertion, commands, etc..
+		- works out of the box for stuff like arrow keys, backspace, enter, selecting/copying text etc..
+*/
+
+int main() {
+	std::cout << "hello, world!" << std::endl;
+
+	return 0;
+}
+
 </div>
+</div>
+
+<pre class="microlight">
+/* scss */
+$font-stack: Helvetica, sans-serif;
+$primary-color: #333;
+
+body {
+  font: 100% $font-stack;
+  color: $primary-color;
+}
+
+nav {
+	ul {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	li { display: inline-block; }
+
+	a {
+		display: block;
+		padding: 6px 12px;
+		text-decoration: none;
+	}
+}
+
+\@mixin theme(\$theme: DarkGray) {
+  background: \$theme;
+  box-shadow: 0 0 1px rgba(\$theme, .25);
+  color: #fff;
+}
+
+.info {
+  \@include theme;
+}
+.alert {
+  \@include theme($theme: DarkRed);
+}
+.success {
+  \@include theme($theme: DarkGreen);
+}
+
+\@use "sass:math";
+
+.container {
+  display: flex;
+}
+
+article[role="main"] {
+  width: math.div(600px, 960px) * 100%;
+}
+
+aside[role="complementary"] {
+  width: math.div(300px, 960px) * 100%;
+  margin-left: auto;
+}
+</pre>
 
 
 <pre class="microlight">
