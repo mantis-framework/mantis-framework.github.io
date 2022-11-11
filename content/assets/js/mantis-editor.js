@@ -146,7 +146,7 @@ function key_press(e) {
 					to_check.push(to_check[i].childNodes[n]);
 				else
 					++pos;
-				console.log("fuck yeah baby " + to_check[i].childNodes[n].childNodes.length);
+				console.log("in here " + to_check[i].childNodes[n].childNodes.length);
 			}
 		}
 	}
