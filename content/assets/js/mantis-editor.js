@@ -35,14 +35,14 @@ function redraw_editor() {
 			"<", "&lt;").replaceAll(
 			"-", "&#8288;-&#8288;").replaceAll(
 			"\n\n", "\n") + '\n';
-	microlight.reset();
+	microlight.reset([editor_content]);
 }
 //fixes newline issues when loading content with newlines
 editor.innerHTML = 
 	editor.innerText.replaceAll(
 		"\n\n", "<div><br></div>").replaceAll(
 		"\n", "<div></div>") + '\n';
-//microlight.reset();
+//microlight.reset([editor_content]);
 redraw_editor();
 
 function insert_tab() {
@@ -96,24 +96,30 @@ function key_press_old(e) {
 
 const mantis_editor = document.getElementById("mantis-editor");
 
-function redraw_mantis_editor() {
-	mantis_editor.innerHTML = 
-		mantis_editor.innerText.replaceAll(
-			"<", "&lt;").replaceAll(
-			"-", "&#8288;-&#8288;").replaceAll(
-			"\n\n", "\n") + '\n';
-	microlight.reset();
-}
-
 function key_press(e) {
-	console.log("key_press");
+	//console.log("key_press");
 
 
 	switch(e.keyCode) {
-		case shiftKey :
+		case upKey:
+			return;
+		case downKey:
+			return;
+		case leftKey:
+			return;
+		case rightKey:
+			return;
+		case shiftKey:
+			return;
+		case ctrlKey:
+			return;
+		case metaKey:
+			return;
+		case altKey:
 			return;
 		case capsKey:
-			e.preventDefault();
+			return;
+		case escKey:
 			return;
 	}
 
@@ -125,38 +131,37 @@ function key_press(e) {
 	let to_check = [mantis_editor];
 	let pos = sel.focusOffset, childNo = 0;
 
-	console.log("focusNodeText: " + sel.focusNode.textContent);
+	//console.log("focusNodeText: " + sel.focusNode.textContent);
 
 	//does it matter if this is bfs or dfs?
 	//presumably elements of lines can have children?
 	for(let i=0; i<to_check.length; ++i) {
 		for(let n=0; n<to_check[i].childNodes.length; ++n) {
 			if(to_check[i].childNodes[n] == sel.focusNode) {
-				console.log("YA");
+				//console.log("YA");
 				i = to_check.length;
 				break;
 			}
 
 			if(to_check[i].childNodes[n].nodeType == 3) {
 				pos += to_check[i].childNodes[n].textContent.length;
-				console.log("editor kid: " + to_check[i].childNodes[n].textContent);
+				//console.log("editor kid: " + to_check[i].childNodes[n].textContent);
 			}
 			else {
 				if(to_check[i].childNodes[n].childNodes.length)
 					to_check.push(to_check[i].childNodes[n]);
 				else
 					++pos;
-				console.log("in here " + to_check[i].childNodes[n].childNodes.length);
+				//console.log("in here " + to_check[i].childNodes[n].childNodes.length);
 			}
 		}
 	}
 
-	console.log(pos);
+	//console.log(pos);
 	
-	if(e.keyCode = tabKey)
-		e.preventDefault();
+	e.preventDefault();
 
-	let offset = 0, txt = mantis_editor.innerText;
+	let txt = mantis_editor.innerText;
 
 	switch(e.keyCode) {
 		case bsKey:
@@ -167,17 +172,6 @@ function key_press(e) {
 				mantis_editor.innerHTML = txt.slice(0, pos) + txt.slice(pos+1);
 			else
 				mantis_editor.innerHTML = txt.slice(0, pos);
-			break;
-		case leftKey:
-			e.preventDefault();
-			if(pos)
-				--pos;
-			//alert(pos);
-			break;
-		case rightKey:
-			e.preventDefault();
-			if(pos < mantis_editor.innerHTML.length)
-				++pos;
 			break;
 		case tabKey:
 			if(pos < txt.length)
@@ -201,8 +195,7 @@ function key_press(e) {
 			++pos;
 	}
 
-	//redraw_mantis_editor();
-	microlight.reset();
+	microlight.reset([mantis_editor]);
 
 	// Move the caret immediately after the inserted span
 	if(!sel.rangeCount)
@@ -215,7 +208,7 @@ function key_press(e) {
 		for(let n=0; n<to_check[i].childNodes.length; ++n) {
 			if(to_check[i].childNodes[n].nodeType == 3) {
 				if(pos < to_check[i].childNodes[n].length) {
-					console.log("should have happened");
+					//console.log("should have happened");
 					if(e.keyCode == leftKey) {
 						range.setStart(to_check[i].childNodes[n], pos);
 						range.setEnd(  to_check[i].childNodes[n], pos);
@@ -234,7 +227,7 @@ function key_press(e) {
 				else if(pos)
 					--pos;
 				else {
-					console.log("should have happened3.0");
+					//console.log("should have happened3.0");
 					if(e.keyCode == leftKey) {
 						range.setStart(to_check[i].childNodes[n], 0);
 						range.setEnd(  to_check[i].childNodes[n], 0);
@@ -247,13 +240,21 @@ function key_press(e) {
 			}
 		}
 	}
-	console.log("POSSS: " + pos);
+	//console.log("POSSS: " + pos);
 
 
     sel.removeAllRanges();
     sel.addRange(range);
     //mantis_editor.focus();
 }
+
+	
+
+/*document.getElementById("mantis-editor").addEventListener("keydown", (event) => {
+    Promise.resolve().then(_ => {
+        microlight.reset();
+    });
+});*/
 
 //document.addEventListener('keydown', key_press, false);
 //document.addEventListener('keyup'  , key_press, false);

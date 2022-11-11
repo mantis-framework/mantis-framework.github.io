@@ -68,6 +68,11 @@ h4{color: var(--rnbw-color-9)}
 h5{color: var(--rnbw-color-10)}
 h6{color: var(--rnbw-color-11)}
 
+mono {
+	color: var(--rnbw-color-7);
+	font-size: 90%;
+}
+
 .noselect, br, .fa
 {
 	-webkit-user-select: none; /* Chrome/Safari */
