@@ -6,7 +6,7 @@
 <h6>mantis</h6>
 
 <p>
-	playground for mantis website - homepage currently messy tinkering with playground for <mono>mantis-highlight</mono> and <mono>mantis-editor</mono>..
+	playground for mantis website - homepage currently messy, tinkering with playground for <mono>mantis-highlight</mono> and <mono>mantis-editor</mono>..
 </p><br><br>
 
 <h3>highlighter/editor usecases (non-exclusive)</h3>
@@ -14,7 +14,7 @@
 	<li>stylable syntax highlighting with rainbow brackets/selectors/properties/etc.</li>
 	<li>website animations with text</li>
 	<li>web editors/ides/clis/terminals/etc.</li>
-	<li>chat bots</li>
+	<li>ai/chat bots/assistants</li>
 </ul>
 
 <h2>mantis-editor</h2><br>
@@ -53,7 +53,6 @@ int main() {
 
 	- gets and sets the caret properly each content modifying key stroke 
 	- turns out you can just let the normal event run for non content modifying key strokes because it doesn't require the content being modified or redoing syntax highlighting, both of which reset the caret position (eg. arrow keys)
-	- need to implement calling reset on single element rather than rehighlighting entire page
 	- if I could figure out how to rehighlight and reset the caret position after letting only the events we want to run (ie. not be prevented) then could potentially avoid having to do two bfs searches of the text nodes (haven't been able to avoid searching:
 		1. before modifying and rehighlighting as need to get the full current position of caret, which could have changed even from using the mouse and hard to keep a global pos variable when events are firing frequently, otherwise could potentially keep track of caret position from keystrokes and do bfs/dfs search to update caret position onclick)
 		2. after modifying and rehighlighting (haven't been able to keep track of the focusNode from before modification/rehighlighting and after, quite likely from the text nodes being recreated though that's under the hood for js and not sure where to really check what it's doing or if it'd even be browser independent, likely js implementation independent?)
@@ -79,6 +78,7 @@ int main() {
 	- need to implement caret getting/setting anyway for stuff like tab insertion, commands, terminal-like carets etc..
 	- works out of the box for stuff like arrow keys, backspace, enter, selecting/copying text, undo/redo (still haven't figured out undo/redo for v2.0) etc..
 	- seems to be difficult to make user-resizable or have max-height with scrolling, attempts to have event listeners on resize of editable transparent-font div to also resize highlighted div resulted in very jumpy behaviour in browser (too chaotic to check within any reasonable tolerances)
+	- some issues may be resolved by nesting the editable div inside the content div. Still have issue for both v1.0 and v2.0 of inserting tabs.. 
 */
 </pre><br><br>
 
@@ -152,10 +152,9 @@ aside[role="complementary"] {
 	scss example notes:
 	-------------------
 
-	- brackets are rainbow colored depending on nested depth, provides visually digestible information about whether brackets syntactically correct, eg. have matching close brackets of the right type in the right place, and makes it easy to find matching open/close brackets when reading code
+	- brackets are rainbow colored depending on nested depth, provides visually digestible information about whether brackets are syntactically correct, eg. have matching close brackets of the right type in the right place, and makes it easy to find matching open/close brackets when reading code
 	- selectors/properties are also rainbow colored depending on depth of nesting within brackets, helpful for similar reasons to rainbow brackets, eg. for identifying which nest level a selector/property is at
 	- bracket/selector/property/number colours have animating hues presently 
-	- need to implement calling reset on single element rather than rehighlighting entire page, eg. for editor and using client side js to modify/set/load/etc. a mantis-highlight element 
 */
 </pre><br>
 
