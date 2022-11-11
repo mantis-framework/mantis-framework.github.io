@@ -37,7 +37,7 @@ function redraw_editor() {
 			"\n\n", "\n") + '\n';
 	microlight.reset();
 }
-//somehow this fixes newline issues when loading content with newlines
+//fixes newline issues when loading content with newlines
 editor.innerHTML = 
 	editor.innerText.replaceAll(
 		"\n\n", "<div><br></div>").replaceAll(
@@ -127,7 +127,8 @@ function key_press(e) {
 
 	console.log("focusNodeText: " + sel.focusNode.textContent);
 
-	//should this be bfs or dfs?
+	//does it matter if this is bfs or dfs?
+	//presumably elements of lines can have children?
 	for(let i=0; i<to_check.length; ++i) {
 		for(let n=0; n<to_check[i].childNodes.length; ++n) {
 			if(to_check[i].childNodes[n] == sel.focusNode) {
@@ -208,7 +209,7 @@ function key_press(e) {
 		return;
 	const range = sel.getRangeAt(0);
 
-	//should this be bfs or dfs?
+	//does it matter if this is bfs or dfs?
 	to_check = [mantis_editor];
 	for(let i=0; i<to_check.length; ++i) {
 		for(let n=0; n<to_check[i].childNodes.length; ++n) {
