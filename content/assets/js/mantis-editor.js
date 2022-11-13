@@ -163,10 +163,7 @@ function key_press(e) {
 	
 	e.preventDefault();
 
-	let txt = mantis_editor.innerText.replaceAll(
-			"&", "&amp;").replaceAll(
-			"<", "&lt;").replaceAll(
-			"-", "&#8288;-&#8288;");
+	let txt = mantis_editor.innerText;
 	switch(e.keyCode) {
 		case bsKey:
 			if(!pos)
