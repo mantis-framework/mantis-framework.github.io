@@ -32,6 +32,7 @@ new ResizeObserver(() => new_editor_content_size()).observe(editor_content);
 function redraw_editor() {
 	editor_content.innerHTML = 
 		editor.innerText.replaceAll(
+			"&", "&amp;").replaceAll(
 			"<", "&lt;").replaceAll(
 			"-", "&#8288;-&#8288;").replaceAll(
 			"\n\n", "\n") + '\n';
@@ -41,7 +42,7 @@ function redraw_editor() {
 editor.innerHTML = 
 	editor.innerText.replaceAll(
 		"\n\n", "<div><br></div>").replaceAll(
-		"\n", "<div></div>") + '\n';
+		"\n", "<div></div>") + '<div><br></div>';
 //microlight.reset([editor_content]);
 redraw_editor();
 
@@ -95,6 +96,7 @@ function key_press_old(e) {
 
 
 const mantis_editor = document.getElementById("mantis-editor");
+mantis_editor.innerHTML = mantis_editor.innerText + '\n';
 
 function key_press(e) {
 	//console.log("key_press");
@@ -161,8 +163,10 @@ function key_press(e) {
 	
 	e.preventDefault();
 
-	let txt = mantis_editor.innerText;
-
+	let txt = mantis_editor.innerText.replaceAll(
+			"&", "&amp;").replaceAll(
+			"<", "&lt;").replaceAll(
+			"-", "&#8288;-&#8288;");
 	switch(e.keyCode) {
 		case bsKey:
 			if(!pos)
