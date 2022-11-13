@@ -67,7 +67,7 @@ function is_var_name_char(c, is_start) {
 }
 
 function is_selector_char(c) {
-	return /^(\d|\s|\w|_|-|,|\.|#|\*|\[|]|\\|'|"|=|:|>|\||\^|$|\+|~)/['test'](c);
+	return /^(\d|\s|\w|_|-|,|\.|#|\*|\[|]|\\|'|"|=|:|>|\||\^|\$|\+|~)/['test'](c);
 }
 
 (function (root, factory) {
@@ -216,7 +216,7 @@ function is_selector_char(c) {
                                 ? "color: var(--rnbw-color-11)"
                             : is_dollar_var || prev1 == '$' 
                                 ? "color:var(--neon-orange)" 
-                            : is_at_fn || prev1 == '@' || chr == '@'
+                            : is_at_fn || prev1 == '\@' || chr == '\@'
                                 ? "color:var(--neon-pink)" 
                             : chr == '('
                             	? "color:var(--sorbet-orange)"
@@ -366,7 +366,7 @@ function is_selector_char(c) {
                 if(!is_str && chr == '/' && (lastTokenType < 3 || is_regex) && prev1 != '<')
                 	is_regex = !is_regex;
 
-                if(prev1 == '@' && !is_whitespace(chr) && !is_brace(chr))
+                if(prev1 == '\@' && !is_whitespace(chr) && !is_brace(chr))
                     is_at_fn = 1;
                 else if(is_at_fn && (is_whitespace(chr) || is_brace(chr)))
                     is_at_fn = 0;
