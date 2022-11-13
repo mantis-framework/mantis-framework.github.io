@@ -67,7 +67,7 @@ function is_var_name_char(c, is_start) {
 }
 
 function is_selector_char(c) {
-	return /^(\d|\s|\w|_|-|,|\.|#|\*|\[|]|\\|'|"|=|:|>|\||^|\$|\+|~)/['test'](c);
+	return /^(\d|\s|\w|_|-|,|\.|#|\*|\[|]|\\|'|"|=|:|>|\||\^|\$|\+|~)/['test'](c);
 }
 
 (function (root, factory) {
@@ -91,16 +91,19 @@ function is_selector_char(c) {
         _3px_0px_5    = '3px 0px 5',
         brace         = ')',
 
-        is_str        = false,
-        is_at_fn      = false,
-        html_tag_open = false,
-        is_html_tag   = false,
-        is_property   = false,
-        is_selector   = false,
-        is_dollar_var = false,
-        is_tag_name   = false,
+        is_escaped    = 0,
+        is_char       = 0,
+        is_str        = 0,
+        is_regex      = 0,
+        is_at_fn      = 0,
+        html_tag_open = 0,
+        is_html_tag   = 0,
+        is_property   = 0,
+        is_selector   = 0,
+        is_dollar_var = 0,
+        is_tag_name   = 0,
         brace_depth   = 0,
-        valid_braces  = true,
+        valid_braces  = 1,
         braces        = [],
         keyword_type  = 0,
         colors = [0, 3, 6, 9, 1, 4, 7, 10, 2, 5, 8],
@@ -115,14 +118,17 @@ function is_selector_char(c) {
 
         for (i = 0; el = microlighted[i++];) {
             cl = el.classList;
-            is_str = is_at_fn 
-                   = html_tag_open 
-                   = is_html_tag 
-                   = is_property
-                   = is_dollar_var
-                   = is_tag_name 
-                   = false;
-            valid_braces = true;
+            is_escaped = is_char
+                       = is_str 
+                       = is_regex
+                       = is_at_fn 
+                       = html_tag_open 
+                       = is_html_tag 
+                       = is_property
+                       = is_dollar_var
+                       = is_tag_name 
+                       = 0;
+            valid_braces = 1;
             braces = [];
             brace_depth = 0;
             keyword_type = 0;
@@ -194,7 +200,7 @@ function is_selector_char(c) {
                         prev2+prev1 == '*/'
                     ][tokenType]
                 ) {
-                    // appending the token to the result
+         			// appending the token to the result
                     if (token) {
                         // remapping token type into style
                         // (some types are highlighted similarly)
@@ -248,12 +254,13 @@ function is_selector_char(c) {
                                 (prev1 == '<' && is_html_tag) || 
                                 (prev1 == '>' && is_html_tag) || 
                                 (prev1 == '/' && prev2 == '<') ? "var(--rnbw-color-" + colors[brace_depth%colors.length] + ")"
-                            : prev1 == '-' && chr.match(/^[0-9]+$/) ? "var(--rnbw-color-6)" 
-                            : "#c75656") + ';',
+                            : prev1 == '-' && chr.match(/^[0-9]+$/) ? "var(--rnbw-color-4)" 
+                            : "#7132a8") + ';',
+                            //: "#c75656") + ';',
                             // 3: strings and regexps
                             (is_str || prev1 == '"') ? 'color:var(--sorbet-lime);' : 'color:var(--sherbet-blue);',
                             // 4: numbers
-                            'color: var(--rnbw-color)',
+                            'color: var(--rnbw-color-10)',
                             // 5: comments
                             'color:#9e9e9e;',
                             // 6: types
@@ -305,18 +312,18 @@ function is_selector_char(c) {
                     while (![
                         1,                   //  0: whitespace
                                              //  1: operator or braces
-                        /[\/{[(%\-+*=<:;|\\.,?!&@~]/[test](chr),
+                        /[/{[(%\-+*=<:;|\\.,?!&@~]/[test](chr),
                         /[}\])>]/[test](chr),  //  2: closing brace
                         /[\w]/[test](chr) || /[@\w]/[test](chr),  //  3: (key)word
-                        chr == '/' &&        //  4: regex
+                        chr == '/' &&  !is_str &&      //  4: regex
                             // previous token was an
                             // opening brace or an
                             // operator (otherwise
                             // division, not a regex)
-                            (lastTokenType < 1) &&
+                            (lastTokenType < 3) &&
                             // workaround for xml
                             // closing tags
-                            prev1 != '<',
+                            prev1 != '<' && prev1 != '\\',
                         chr == '"',          //  5: string with "
                         chr == "'",          //  6: string with '
                                              //  7: xml comment
@@ -327,8 +334,39 @@ function is_selector_char(c) {
                     ][--tokenType]);
                 }
 
-                if(chr == '"' && prev1 != '\\')
+                if(!is_str && !is_regex && is_open_brace(prev1)) {
+                    ++brace_depth;
+                    braces.push(prev1);
+                }
+
+                if(!is_str && !is_regex && is_close_brace(chr)) {
+                	--brace_depth;
+                    valid_braces = (
+                    	(chr == '}' && braces[brace_depth] == '{') ||
+                    	(chr == ']' && braces[brace_depth] == '[') ||
+                    	(chr == ')' && braces[brace_depth] == '(') 
+                    );
+                    //if(!valid_braces)
+                    //	alert(brace_depth + " " + chr + " " + braces[brace_depth] + " " + text.substr(pos, 10));
+                    braces.pop();
+                }
+
+                //is_escaped = (!is_escaped && prev1 == '\\');
+                if(is_escaped)
+                	is_escaped = 0;
+                else if(prev1 == '\\')
+                	is_escaped = 1;
+
+                if(!is_escaped && !is_str && chr == "'")
+                	is_char = !is_char;
+
+                if(!is_escaped && !is_char && chr == '"')
                 	is_str = !is_str;
+
+                if(chr == '/' && prev1 == '+')
+            		alert(is_str);
+                if(!is_str && chr == '/' && (lastTokenType < 3 || is_regex) && prev1 != '<')
+                	is_regex = !is_regex;
 
                 if(prev1 == '@' && !is_whitespace(chr) && !is_brace(chr))
                     is_at_fn = 1;
@@ -376,21 +414,6 @@ function is_selector_char(c) {
                 	}
                 }
 
-                if(is_open_brace(prev1)) {
-                    ++brace_depth;
-                    braces.push(prev1);
-                }
-
-                if(is_close_brace(chr)) {
-                	--brace_depth;
-                    valid_braces = (
-                    	(chr == '}' && braces[brace_depth] == '{') ||
-                    	(chr == ']' && braces[brace_depth] == '[') ||
-                    	(chr == ')' && braces[brace_depth] == '(') 
-                    );
-                    braces.pop();
-                }
-
                 if(is_html_tag && prev1 == '>') {
                     is_html_tag = 0;
                     is_tag_name = 0;
@@ -412,8 +435,11 @@ function is_selector_char(c) {
                     }
                     else if(/^(\w|!)/[test](next1)) {
                         let depth = 0;
+                        let x = pos+1;
 
-                        for(let x=pos+1; x<text.length; ++x) {
+                        //alert("hmm");
+
+                        for(; x<text.length; ++x) {
                             if(!depth && text[x] == '>') {
                                 is_html_tag = 1;
                                 html_tag_open = 1;
@@ -435,6 +461,12 @@ function is_selector_char(c) {
                                 ++depth;
                             else if(/^(}|>|])/[test](text[x]))
                                 --depth;
+                        }
+
+                        if(x == text.length) {
+                        	is_html_tag = 1;
+                            html_tag_open = 1;
+                            is_tag_name = 1;
                         }
                     }
                 }
