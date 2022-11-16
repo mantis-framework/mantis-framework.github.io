@@ -54,7 +54,7 @@ function iterate_hue() {
 }
 
 async function start_cycling_hue() {
-	if(++cycle_hue_count == 1) {
+	if(++cycle_hue_count === 1) {
 		cycle_hue_active = 1;
 
 		while(cycle_hue_active) {
@@ -71,14 +71,14 @@ function stop_cycling_hue() {
 }
 
 function add_cycle_hue_listeners() {
-	if(cycle_hue_mode == cycle_mode_focus) { 
+	if(cycle_hue_mode === cycle_mode_focus) { 
 		active_hue_listeners = 1;
 		window.addEventListener("focus", start_cycling_hue);
 		window.addEventListener("blur", stop_cycling_hue);
 		@//window.onfocus = start_cycling_hue;
 		@//window.onblur = stop_cycling_hue;
 	}
-	else if(cycle_hue_mode == cycle_mode_mouse) {
+	else if(cycle_hue_mode === cycle_mode_mouse) {
 		active_hue_listeners = 1;
 		document.getElementById("body").addEventListener("mouseenter", start_cycling_hue);
 		document.getElementById("body").addEventListener("mouseleave", stop_cycling_hue);
@@ -93,15 +93,14 @@ function remove_cycle_hue_listeners() {
 		alert("no active hue listeners");
 		return;
 	}
-
-	else if(cycle_hue_mode == cycle_mode_focus) { 
+	else if(cycle_hue_mode === cycle_mode_focus) { 
 		active_hue_listeners = 0;
 		window.removeEventListener("focus", start_cycling_hue);
 		window.removeEventListener("blur", stop_cycling_hue);
 		@//window.removeAttribute("focus");
 		@//window.removeAttribute("blur");
 	}
-	else if(cycle_hue_mode == cycle_mode_mouse) {
+	else if(cycle_hue_mode === cycle_mode_mouse) {
 		active_hue_listeners = 0;
 		document.getElementById("body").removeEventListener("mouseenter", start_cycling_hue);
 		document.getElementById("body").removeEventListener("mouseleave", stop_cycling_hue);
@@ -112,9 +111,9 @@ function remove_cycle_hue_listeners() {
 }
 
 function set_cycle_mode(mode) {
-	if(mode == cycle_hue_mode)
+	if(mode === cycle_hue_mode)
 		alert("cycle hue mode is already '" + mode + "'");
-	else if(mode == cycle_mode_focus || mode == cycle_mode_mouse) {
+	else if(mode === cycle_mode_focus || mode === cycle_mode_mouse) {
 		remove_cycle_hue_listeners();
 		cycle_hue_mode = mode;
 		add_cycle_hue_listeners();

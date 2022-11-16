@@ -53,7 +53,7 @@ int main() {
 	- has overlapping divs (editable div has transparent font color)
 	- caret lags 1 position when holding keys
 	- need to implement caret getting/setting anyway for stuff like tab insertion, commands, terminal-like carets etc..
-	- works out of the box for stuff like arrow keys, backspace, enter, selecting/copying text, undo/redo (still haven't figured out undo/redo for v2.0) etc..
+	- works out of the box for stuff like arrow keys, backspace, enter, selecting/copying text, undo/redo (still havent figured out undo/redo for v2.0) etc..
 	- seems to be difficult to make user-resizable or have max-height with scrolling, attempts to have event listeners on resize of editable transparent-font div to also resize highlighted div resulted in very jumpy behaviour in browser (too chaotic to check within any reasonable tolerances)
 	- some issues may be resolved by nesting the editable div inside the content div. Still have issue for both v1.0 and v2.0 of inserting tabs.. 
 */

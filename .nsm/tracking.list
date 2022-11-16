@@ -6,10 +6,6 @@
 "bundled'"
 'templates/js.template'
 
-'assets/js/microlight'
-"microlight'"
-'templates/js.template'
-
 'index'
 'index'
 'templates/html.template'
